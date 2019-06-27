@@ -1,4 +1,4 @@
-import 'StoreMainScreen.dart';
+import 'package:nok_nok/Screens/StoreMainScreen/StoreMainScreen.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
@@ -21,7 +21,7 @@ class StoreMainScreenState extends State<StoreMainScreen> {
             Expanded(
               child:
                 Container(
-                  color: CupertinoColors.activeGreen,
+                  color: CupertinoColors.activeBlue,
                   padding: EdgeInsets.only(left: 8, right: 8),
                   child:
                     Center(
