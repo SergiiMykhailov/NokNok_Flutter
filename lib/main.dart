@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:nok_nok/Screens/StoreMainScreen/StoreMainScreen.dart';
+import 'package:nok_nok/UI/Screens/StoreMainScreen/StoreMainScreen.dart';
 
 void main() => runApp(NokNokApp());
 

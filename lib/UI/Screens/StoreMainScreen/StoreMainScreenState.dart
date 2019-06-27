@@ -1,4 +1,4 @@
-import 'package:nok_nok/Screens/StoreMainScreen/StoreMainScreen.dart';
+import 'package:nok_nok/UI/Screens/StoreMainScreen/StoreMainScreen.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
