@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:nok_nok/UI/Screens/StoreMainScreen/StoreMainScreen.dart';
+import 'package:nok_nok/ui/screens/store_screen/store_screen.dart';
 
 void main() => runApp(NokNokApp());
 
@@ -13,7 +13,7 @@ class NokNokApp extends StatelessWidget {
       theme: CupertinoThemeData(
         primaryColor: CupertinoColors.activeBlue
       ),
-      home: StoreMainScreen(),
+      home: StoreScreen(),
     );
   }
 
