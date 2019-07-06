@@ -4,11 +4,11 @@ class StoreCategoryItem {
 
   // Public methods and properties
 
-  final Icon icon;
+  final String iconPath;
   final String title;
 
-  StoreCategoryItem({Key key, Icon icon, String title})
-    : this.icon = icon,
+  StoreCategoryItem({Key key, String iconPath, String title})
+    : this.iconPath = iconPath,
       this.title = title;
 
 }

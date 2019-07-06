@@ -86,7 +86,7 @@ class _StoreScreenState extends State<StoreScreen> {
         ),
         VerticalDivider(
           indent: 0,
-          color: CupertinoColors.inactiveGray,
+          color: CupertinoColors.activeBlue,
         ),
         Expanded(
           child:
