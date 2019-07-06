@@ -1,10 +1,10 @@
-import 'package:nok_nok/blocs/store_block/store_bloc.dart';
+import 'package:nok_nok/ui/screens/store_screen/block/store_bloc.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nok_nok/blocs/store_block/store_state.dart';
+import 'package:nok_nok/ui/screens/store_screen/block/store_state.dart';
 
 class StoreScreen extends StatefulWidget {
 

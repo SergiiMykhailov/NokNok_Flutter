@@ -1,4 +1,4 @@
-import 'package:nok_nok/ui/controls/categories_list/store_categories_list_item_widget.dart';
+import 'package:nok_nok/ui/screens/store_screen/controls/categories_list/store_categories_list_item_widget.dart';
 
 import 'package:nok_nok/data_access/models/store_category_item.dart';
 
