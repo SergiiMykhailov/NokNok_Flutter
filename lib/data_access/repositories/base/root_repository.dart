@@ -1,4 +1,4 @@
-import 'package:nok_nok/data_access/repositories/interfaces/store_repository.dart';
+import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 
 import 'package:built_collection/built_collection.dart';
 

@@ -1,10 +1,12 @@
-import 'package:nok_nok/ui/screens/store_screen/block/store_bloc.dart';
+import 'block/store_bloc.dart';
+import 'block/store_state.dart';
+
+import 'package:nok_nok/ui/utils/utils.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:nok_nok/ui/screens/store_screen/block/store_state.dart';
 
 class StoreScreen extends StatefulWidget {
 
@@ -55,22 +57,14 @@ class _StoreScreenState extends State<StoreScreen> {
 
   Widget _buildScreen(StoreState state) {
     if (state is StoreStateLoading) {
-      return _buildLoadingScreen();
+      return buildLoadingWidget("Loading store items...");
     }
     else if (state is StoreStateLoaded) {
       return _buildStoreScreen();
     }
     else {
-      return Center(
-        child: Text("Invalid screen state"),
-      );
+      return buildInvalidStateWidget();
     }
-  }
-
-  Widget _buildLoadingScreen() {
-    return Center(
-      child: CircularProgressIndicator(),
-    );
   }
 
   Widget _buildStoreScreen() {
@@ -89,8 +83,7 @@ class _StoreScreenState extends State<StoreScreen> {
           color: CupertinoColors.activeBlue,
         ),
         Expanded(
-          child:
-          Container(
+          child: Container(
             padding: EdgeInsets.only(left: 8, right: 8),
             child:
             Center(

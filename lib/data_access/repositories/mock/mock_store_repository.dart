@@ -1,13 +1,13 @@
 import 'package:nok_nok/data_access/models/store_category_item.dart';
-import 'package:nok_nok/data_access/repositories/interfaces/store_repository.dart';
+import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 
 import 'package:built_collection/built_collection.dart';
 
-class DummyStoreRepository implements StoreRepository {
+class MockStoreRepository implements StoreRepository {
 
   // Public methods
 
-  factory DummyStoreRepository() => _instance;
+  factory MockStoreRepository() => _instance;
 
   @override
   Future<BuiltList<StoreCategoryItem>> fetchAllCategories() {
@@ -37,12 +37,12 @@ class DummyStoreRepository implements StoreRepository {
 
   // Internal methods
 
-  DummyStoreRepository._setup() {
+  MockStoreRepository._setup() {
     // Initialization logic here.
   }
 
   // Internal fields
 
-  static final _instance = new DummyStoreRepository._setup();
+  static final _instance = new MockStoreRepository._setup();
 
 }

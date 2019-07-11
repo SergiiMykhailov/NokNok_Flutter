@@ -1,9 +1,13 @@
+import 'package:nok_nok/ui/routing/base_router.dart';
+import 'package:nok_nok/ui/routing/router_factory.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:nok_nok/ui/screens/store_screen/store_screen.dart';
 
 void main() => runApp(NokNokApp());
 
 class NokNokApp extends StatelessWidget {
+
+  // Overridden methods
 
   // This widget is the root of your application.
   @override
@@ -13,8 +17,12 @@ class NokNokApp extends StatelessWidget {
       theme: CupertinoThemeData(
         primaryColor: CupertinoColors.activeBlue
       ),
-      home: StoreScreen(),
+      onGenerateRoute: _router.generateRoute,
     );
   }
+
+  // Internal fields
+
+  final BaseRouter _router = createRouter();
 
 }
