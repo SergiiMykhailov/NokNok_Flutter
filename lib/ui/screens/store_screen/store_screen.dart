@@ -1,5 +1,7 @@
-import 'block/store_bloc.dart';
-import 'block/store_state.dart';
+import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+
+import 'bloc/store_bloc.dart';
+import 'bloc/store_state.dart';
 
 import 'package:nok_nok/ui/utils/utils.dart';
 
@@ -10,15 +12,30 @@ import 'package:flutter/material.dart';
 
 class StoreScreen extends StatefulWidget {
 
-  StoreScreen({Key key})
-   : super(key: key);
+  // Public methods and properties
+
+  StoreScreen(StoreRepository storeRepository, {Key key})
+   : _storeRepository = storeRepository, super(key: key);
+
+  // Overridden methods
 
   @override
-  _StoreScreenState createState() => _StoreScreenState();
+  _StoreScreenState createState() => _StoreScreenState(storeRepository: _storeRepository);
+
+  // Internal fields
+
+  final StoreRepository _storeRepository;
 
 }
 
 class _StoreScreenState extends State<StoreScreen> {
+
+  // Public methods and properties
+
+  _StoreScreenState({Key key, StoreRepository storeRepository})
+    : _storeBloc = StoreBloc(storeRepository), super();
+
+  // Overridden methods
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +114,6 @@ class _StoreScreenState extends State<StoreScreen> {
 
   // Internal fields
 
-  final _storeBloc = StoreBloc();
+  final _storeBloc;
 
 }

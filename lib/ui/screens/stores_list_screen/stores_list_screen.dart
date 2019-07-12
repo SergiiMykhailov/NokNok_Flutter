@@ -13,7 +13,7 @@ class StoresListScreen extends StatefulWidget {
 
   // Public methods and properties
 
-  StoresListScreen({Key key, RootRepository rootRepository})
+  StoresListScreen(RootRepository rootRepository, {Key key})
     : _rootRepository = rootRepository, super(key: key);
 
   @override
@@ -53,7 +53,7 @@ class _StoresListScreenState extends State<StoresListScreen> {
           // Listener is the place for logging, showing Snackbars, navigating, etc.
           // It is guaranteed to run only once per state change.
           listener: (BuildContext context, StoresListState state) {
-            // Nothing to do at the moment.
+            _handleState(context, state);
           },
         )
       ),
@@ -69,15 +69,20 @@ class _StoresListScreenState extends State<StoresListScreen> {
 
   // Internal methods
 
+  void _handleState(BuildContext context, StoresListState state) {
+    if (state is StoresListStateNavigatingToStore) {
+      Navigator.pushNamed(
+        context,
+        BaseRouter.Store,
+        arguments: state.storeRepository);
+    }
+  }
+
   Widget _buildScreen(BuildContext context, StoresListState state) {
     if (state is StoresListStateLoading) {
       return buildLoadingWidget("Loading stores...");
     }
     else if (state is StoresListStateNavigatingToStore) {
-      Navigator.pushNamed(
-        context,
-        BaseRouter.Store,
-        arguments: state.storeRepository);
       return _buildStoresListScreen();
     }
     else {

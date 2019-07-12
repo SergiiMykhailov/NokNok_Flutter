@@ -1,3 +1,4 @@
+import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/ui/routing/base_router.dart';
 import 'package:nok_nok/ui/screens/store_screen/store_screen.dart';
 import 'package:nok_nok/ui/screens/stores_list_screen/stores_list_screen.dart';
@@ -13,13 +14,17 @@ class MainRouter extends BaseRouter {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case BaseRouter.Root:
-        return CupertinoPageRoute(builder: (_) => StoresListScreen(rootRepository: _rootRepository));
+        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository));
 
       case BaseRouter.StoresList:
-        return CupertinoPageRoute(builder: (_) => StoresListScreen(rootRepository: _rootRepository));
+        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository));
 
       case BaseRouter.Store:
-        return CupertinoPageRoute(builder: (_) => StoreScreen());
+        final storeRepository = settings.arguments;
+        assert(storeRepository != null && storeRepository is StoreRepository,
+               "Store repository is not specified while trying to navigate to store");
+
+        return CupertinoPageRoute(builder: (_) => StoreScreen(storeRepository));
 
       default:
         return CupertinoPageRoute(builder: (_) {

@@ -11,7 +11,7 @@ class MockRootRepository implements RootRepository {
     final allStores = [MockStoreRepository()];
     final result = BuiltList<StoreRepository>.from(allStores);
 
-    return Future<BuiltList<StoreRepository>>.delayed(Duration(seconds: 1),
+    return Future<BuiltList<StoreRepository>>.delayed(Duration(seconds: 2),
                                                       () => result);
   }
 
