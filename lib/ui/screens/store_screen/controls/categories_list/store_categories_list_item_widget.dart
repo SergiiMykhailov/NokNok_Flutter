@@ -5,7 +5,7 @@ import 'package:nok_nok/data_access/models/store_category_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class StoreCategoriesListItemWidget extends StatelessWidget {
+class StoreCategoriesListItemWidget extends StatefulWidget {
 
   // Public methods and properties
 
@@ -19,6 +19,23 @@ class StoreCategoriesListItemWidget extends StatelessWidget {
   // Overridden methods
 
   @override
+  _StoreCategoriesListItemWidgetState createState() => _StoreCategoriesListItemWidgetState(_categoryItem);
+
+  // Internal fields
+
+  final StoreCategoryItem _categoryItem;
+}
+
+class _StoreCategoriesListItemWidgetState extends State<StoreCategoriesListItemWidget> {
+
+  // Public methods and properties
+
+  _StoreCategoriesListItemWidgetState(StoreCategoryItem categoryItem)
+    : _categoryItem = categoryItem, super();
+
+  // Overridden methods
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -27,8 +44,8 @@ class StoreCategoriesListItemWidget extends StatelessWidget {
           padding: EdgeInsets.only(top: DefaultVerticalPadding),
           child: Center(
             child: SizedBox(
-              width: PreferredIconWidth,
-              height: PreferredIconHeight,
+              width: StoreCategoriesListItemWidget.PreferredIconWidth,
+              height: StoreCategoriesListItemWidget.PreferredIconHeight,
               child: Image.network(_categoryItem.iconPath),
             ),
           ),
@@ -40,7 +57,7 @@ class StoreCategoriesListItemWidget extends StatelessWidget {
             _categoryItem.title,
             style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
             textAlign: TextAlign.center,),
-          )
+        )
       ],
     );
   }
@@ -48,4 +65,5 @@ class StoreCategoriesListItemWidget extends StatelessWidget {
   // Internal fields
 
   final StoreCategoryItem _categoryItem;
+
 }
