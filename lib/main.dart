@@ -15,7 +15,7 @@ class NokNokApp extends StatelessWidget {
     return CupertinoApp(
       title: 'Nok Nok',
       theme: CupertinoThemeData(
-        primaryColor: CupertinoColors.activeBlue
+        primaryColor: CupertinoColors.activeBlue,
       ),
       onGenerateRoute: _router.generateRoute,
     );

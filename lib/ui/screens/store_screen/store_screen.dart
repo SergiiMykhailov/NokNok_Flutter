@@ -1,11 +1,16 @@
-import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
-
 import 'bloc/store_bloc.dart';
 import 'bloc/store_state.dart';
 
+import 'package:nok_nok/ui/screens/store_screen/controls/categories_list/store_categories_list_widget.dart';
+
 import 'package:nok_nok/ui/utils/utils.dart';
 
+import 'package:nok_nok/data_access/models/store_category_item.dart';
+import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:built_collection/built_collection.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -77,28 +82,32 @@ class _StoreScreenState extends State<StoreScreen> {
       return buildLoadingWidget("Loading store items...");
     }
     else if (state is StoreStateLoaded) {
-      return _buildStoreScreen();
+      return _buildStoreScreen(state.categoryItems);
     }
     else {
       return buildInvalidStateWidget();
     }
   }
 
-  Widget _buildStoreScreen() {
+  Widget _buildStoreScreen(BuiltList<StoreCategoryItem> categoryItems) {
     return Row(
       children: [
+        // Left panel
         Container(
-          padding: EdgeInsets.only(left: 8, right: 8),
-          child:
-          SizedBox(
-            width: 30,
-            child: Text("Left column"),
-          )
+          width: StoreCategoriesListWidget.PreferredWidth,
+          child: StoreCategoriesListWidget(categoryItems)
         ),
-        VerticalDivider(
-          indent: 0,
-          color: CupertinoColors.activeBlue,
+
+        // Vertical divider
+        Container(
+          padding: EdgeInsets.only(top: DefaultVerticalPadding, bottom: DefaultVerticalPadding),
+          child: VerticalDivider(
+            indent: 0,
+            color: CupertinoColors.inactiveGray,
+          ),
         ),
+
+        // Products list
         Expanded(
           child: Container(
             padding: EdgeInsets.only(left: 8, right: 8),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 const DefaultVerticalPadding = 8.0;
+const DefaultHorizontalPadding = 8.0;
 
 Widget buildLoadingWidget(String message) {
   return Column(
@@ -14,7 +15,7 @@ Widget buildLoadingWidget(String message) {
       ),
       Container(
         padding: EdgeInsets.only(top: DefaultVerticalPadding, bottom: DefaultVerticalPadding),
-        child: CircularProgressIndicator(),
+        child: CupertinoActivityIndicator(),
       ),
     ],
   );

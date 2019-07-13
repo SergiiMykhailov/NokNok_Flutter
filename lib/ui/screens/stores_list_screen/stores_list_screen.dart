@@ -91,7 +91,9 @@ class _StoresListScreenState extends State<StoresListScreen> {
   }
 
   Widget _buildStoresListScreen() {
-    return null;
+    return Container(
+      color: CupertinoColors.white,
+    );
   }
 
   // Internal fields

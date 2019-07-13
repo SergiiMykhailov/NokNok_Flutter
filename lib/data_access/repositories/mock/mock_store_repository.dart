@@ -32,7 +32,8 @@ class MockStoreRepository implements StoreRepository {
 
     final result = BuiltList<StoreCategoryItem>.from(categories);
 
-    return Future<BuiltList<StoreCategoryItem>>.value(result);
+    return Future<BuiltList<StoreCategoryItem>>.delayed(Duration(seconds: 2),
+                                                        () => result);
   }
 
   // Internal methods
