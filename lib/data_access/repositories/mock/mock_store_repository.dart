@@ -12,21 +12,21 @@ class MockStoreRepository implements StoreRepository {
   @override
   Future<BuiltList<StoreCategoryItem>> fetchAllCategories() {
     final categories = [
-      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fvegetables.png?alt=media&token=8d4d9f23-fc13-411f-9bb1-3185f84ab99a',
+      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fvegetables.png?alt=media&token=f19a24e3-a691-4ad5-b67a-3cf83ad4568e',
                         title: 'Овощи и фрукты'),
-      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fbakery.png?alt=media&token=b649044c-43a3-4b90-895d-e16420b06fd9',
+      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fbakery.png?alt=media&token=017a155b-3697-492f-a403-711000720902',
                         title: 'Сладости'),
-      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fgastronomy.png?alt=media&token=046c3f85-c9ae-412d-adba-933b1c6c5d7e',
+      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fgastronomy.png?alt=media&token=b0688a12-97a3-4b5c-8785-f5f2d2dcd269',
                         title: 'Гастрономия'),
-      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fmilk.png?alt=media&token=53e3497d-29b9-49df-9f14-327cddfe9272',
+      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fmilk.png?alt=media&token=862731ac-9dc7-4c0d-85be-9de7fad029ba',
                         title: 'Молочные продукты'),
-      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fbread.png?alt=media&token=12870401-0199-4834-b6b0-30f8d6eff82e',
+      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fbread.png?alt=media&token=a87eb858-427a-49d3-b73e-295824f92dbb',
                         title: 'Хлеб'),
-      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fgrocery.png?alt=media&token=28a1b79a-cafd-436c-b544-e62d6b11b67a',
+      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fgrocery.png?alt=media&token=47c00d09-17db-4254-ad3f-82edce1c2b07',
                         title: 'Бакалея'),
-      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fdrinks.png?alt=media&token=9c6fb401-a1ff-4785-b905-dd2c28548e22',
+      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Fdrinks.png?alt=media&token=c36eb760-7be7-4b6c-abd7-b367e0ee792b',
                         title: 'Напитки'),
-      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Falcohol.png?alt=media&token=4f95ab81-796a-4d30-965a-9044559ff672',
+      StoreCategoryItem(iconPath: 'https://firebasestorage.googleapis.com/v0/b/noknok-c638d.appspot.com/o/stores%2F1%2Ficons%2FgoodsCategories%2Falcohol.png?alt=media&token=2ccfd9bf-7973-45ff-bc4b-0232370d8d11',
                         title: 'Алкоголь')
       ];
 

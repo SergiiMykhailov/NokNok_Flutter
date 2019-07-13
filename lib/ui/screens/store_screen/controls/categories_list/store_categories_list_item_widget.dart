@@ -24,7 +24,7 @@ class StoreCategoriesListItemWidget extends StatelessWidget {
       children: [
         // Icon
         Container(
-          padding: EdgeInsets.only(top: DefaultVerticalPadding, bottom: DefaultVerticalPadding),
+          padding: EdgeInsets.only(top: DefaultVerticalPadding),
           child: Center(
             child: SizedBox(
               width: PreferredIconWidth,
@@ -38,7 +38,7 @@ class StoreCategoriesListItemWidget extends StatelessWidget {
         Center(
           child: Text(
             _categoryItem.title,
-            style: Theme.of(context).textTheme.caption.copyWith(fontSize: 11),
+            style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
             textAlign: TextAlign.center,),
           )
       ],
