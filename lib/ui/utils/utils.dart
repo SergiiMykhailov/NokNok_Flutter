@@ -4,15 +4,18 @@ import 'package:flutter/material.dart';
 const DefaultVerticalPadding = 8.0;
 const DefaultHorizontalPadding = 8.0;
 
-Widget buildLoadingWidget(String message) {
+Widget buildLoadingWidget(BuildContext context, String message) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
+      // Text
       Container(
         padding: EdgeInsets.only(top: DefaultVerticalPadding, bottom: DefaultVerticalPadding),
-        child: Text(message),
+        child: Text(message,
+          style: Theme.of(context).textTheme.subtitle),
       ),
+      // Spinner
       Container(
         padding: EdgeInsets.only(top: DefaultVerticalPadding, bottom: DefaultVerticalPadding),
         child: CupertinoActivityIndicator(),

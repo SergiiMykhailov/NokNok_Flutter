@@ -80,7 +80,7 @@ class _StoresListScreenState extends State<StoresListScreen> {
 
   Widget _buildScreen(BuildContext context, StoresListState state) {
     if (state is StoresListStateLoading) {
-      return buildLoadingWidget("Loading stores...");
+      return buildLoadingWidget(context, "Loading stores...");
     }
     else if (state is StoresListStateNavigatingToStore) {
       return _buildStoresListScreen();

@@ -4,6 +4,7 @@ import 'bloc/store_state.dart';
 import 'package:nok_nok/ui/screens/store_screen/controls/categories_list/store_categories_list_widget.dart';
 
 import 'package:nok_nok/ui/utils/utils.dart';
+import 'package:nok_nok/ui/utils/theme.dart';
 
 import 'package:nok_nok/data_access/models/store_category_item.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
@@ -55,7 +56,7 @@ class _StoreScreenState extends State<StoreScreen> {
             // The builder function has to be a "pure function".
             // That is, it only returns a Widget and doesn't do anything else.
             builder: (BuildContext context, StoreState state) {
-              return _buildScreen(state);
+              return _buildScreen(context, state);
             },
           ),
           // Listener is the place for logging, showing Snackbars, navigating, etc.
@@ -77,9 +78,9 @@ class _StoreScreenState extends State<StoreScreen> {
 
   // Internal methods
 
-  Widget _buildScreen(StoreState state) {
+  Widget _buildScreen(BuildContext context, StoreState state) {
     if (state is StoreStateLoading) {
-      return buildLoadingWidget("Loading store items...");
+      return buildLoadingWidget(context, "Loading store items...");
     }
     else if (state is StoreStateLoaded) {
       return _buildStoreScreen(state.categoryItems);
@@ -103,7 +104,7 @@ class _StoreScreenState extends State<StoreScreen> {
           padding: EdgeInsets.only(top: DefaultVerticalPadding, bottom: DefaultVerticalPadding),
           child: VerticalDivider(
             indent: 0,
-            color: CupertinoColors.inactiveGray,
+            color: NokNokColors.separator,
           ),
         ),
 
