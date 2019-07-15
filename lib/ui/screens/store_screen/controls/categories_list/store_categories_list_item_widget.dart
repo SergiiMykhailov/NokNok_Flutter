@@ -1,6 +1,8 @@
+import 'package:nok_nok/ui/utils/nok_nok_colors.dart';
+import 'package:nok_nok/ui/utils/theme.dart';
 import 'package:nok_nok/ui/utils/utils.dart';
 
-import 'package:nok_nok/data_access/models/store_category_item.dart';
+import 'package:nok_nok/models/store_category_item.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +57,8 @@ class _StoreCategoriesListItemWidgetState extends State<StoreCategoriesListItemW
         Center(
           child: Text(
             _categoryItem.title,
-            style: Theme.of(context).textTheme.caption.copyWith(fontSize: 10),
+            style: Theme.of(context).textTheme.caption.copyWith(fontSize: NokNokFonts.caption,
+                                                                color: NokNokColors.caption),
             textAlign: TextAlign.center,),
         )
       ],

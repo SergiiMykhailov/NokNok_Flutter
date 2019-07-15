@@ -35,7 +35,12 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   Stream<StoreState> _handleReload() async* {
     final storeCategories = await _storeRepository.fetchAllCategories();
-    yield StoreStateLoaded(storeCategories);
+    yield StoreStateCategoriesLoaded(storeCategories);
+
+    if (storeCategories.isNotEmpty) {
+      final firstCategoryProducts = await _storeRepository.fetchBaseProductsForCategory(storeCategories.first);
+      yield StoreStateBaseProductsLoaded(storeCategories, firstCategoryProducts);
+    }
   }
 
   // Internal fields

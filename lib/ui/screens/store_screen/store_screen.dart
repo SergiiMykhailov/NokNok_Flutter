@@ -1,12 +1,15 @@
+import 'package:nok_nok/ui/screens/store_screen/controls/products_list/compact_products_list_widget.dart';
+
 import 'bloc/store_bloc.dart';
 import 'bloc/store_state.dart';
 
 import 'package:nok_nok/ui/screens/store_screen/controls/categories_list/store_categories_list_widget.dart';
 
 import 'package:nok_nok/ui/utils/utils.dart';
-import 'package:nok_nok/ui/utils/theme.dart';
+import 'package:nok_nok/ui/utils/nok_nok_colors.dart';
 
-import 'package:nok_nok/data_access/models/store_category_item.dart';
+import 'package:nok_nok/models/store_category_item.dart';
+import 'package:nok_nok/models/store_product_base.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,15 +85,24 @@ class _StoreScreenState extends State<StoreScreen> {
     if (state is StoreStateLoading) {
       return buildLoadingWidget(context, "Loading store items...");
     }
-    else if (state is StoreStateLoaded) {
-      return _buildStoreScreen(state.categoryItems);
+    else if (state is StoreStateBaseProductsLoaded) {
+      return _buildStoreScreen(context, state.categoryItems, state.products);
+    }
+    else if (state is StoreStateCategoriesLoaded) {
+      return _buildStoreScreen(context, state.categoryItems, null);
     }
     else {
       return buildInvalidStateWidget();
     }
   }
 
-  Widget _buildStoreScreen(BuiltList<StoreCategoryItem> categoryItems) {
+  Widget _buildStoreScreen(BuildContext context,
+                           BuiltList<StoreCategoryItem> categoryItems,
+                           BuiltList<StoreProductBase> products) {
+    assert(categoryItems != null, "Invalid parameter value: 'categoryItems'");
+
+    final productsListWidget = _buildProductsWidget(context, products);
+
     return Row(
       children: [
         // Left panel
@@ -114,12 +126,26 @@ class _StoreScreenState extends State<StoreScreen> {
             padding: EdgeInsets.only(left: 8, right: 8),
             child:
             Center(
-              child: Text("Right column"),
+              child: productsListWidget,
             ),
           ),
         )
       ],
     );
+  }
+
+  Widget _buildProductsWidget(BuildContext context,
+                              BuiltList<StoreProductBase> products) {
+    if (products == null) {
+      return _buildProductsLoadingWidget(context);
+    }
+    else {
+      return CompactProductsListWidget(products);
+    }
+  }
+
+  Widget _buildProductsLoadingWidget(BuildContext context) {
+    return buildLoadingWidget(context, "Loading products list...");
   }
 
   // Internal fields

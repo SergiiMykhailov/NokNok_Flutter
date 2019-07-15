@@ -1,9 +1,8 @@
-import 'dart:ui' show Color;
+class NokNokFonts {
 
-/// A palette of [Color] constants that describe colors commonly used when
-/// matching the iOS platform aesthetics.
-class NokNokColors {
-  NokNokColors._();
+  static const caption = 10.0;
 
-  static const Color separator = Color(0xFFD0CFCF);
+  static const productTitle = 13.0;
+  static const productDescription = 10.0;
+
 }
