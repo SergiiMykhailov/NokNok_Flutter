@@ -1,5 +1,5 @@
-import 'package:nok_nok/ui/utils/nok_nok_colors.dart';
-import 'package:nok_nok/ui/utils/theme.dart';
+import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
+import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/utils.dart';
 
 import 'package:nok_nok/models/store_category_item.dart';

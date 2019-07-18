@@ -1,8 +1,8 @@
 import 'package:nok_nok/models/store_product_base.dart';
 
-import 'package:nok_nok/ui/utils/nok_nok_colors.dart';
-import 'package:nok_nok/ui/utils/nok_nok_images.dart';
-import 'package:nok_nok/ui/utils/theme.dart';
+import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
+import 'package:nok_nok/ui/theme/nok_nok_images.dart';
+import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

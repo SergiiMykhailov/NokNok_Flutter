@@ -6,7 +6,7 @@ import 'bloc/store_state.dart';
 import 'package:nok_nok/ui/screens/store_screen/controls/categories_list/store_categories_list_widget.dart';
 
 import 'package:nok_nok/ui/utils/utils.dart';
-import 'package:nok_nok/ui/utils/nok_nok_colors.dart';
+import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 
 import 'package:nok_nok/models/store_category_item.dart';
 import 'package:nok_nok/models/store_product_base.dart';
