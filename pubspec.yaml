@@ -27,6 +27,8 @@ dependencies:
   bloc: ^0.14.0
   flutter_bloc: ^0.18.0
   built_collection: ^4.1.0
+  firebase_database: ^1.0.3
+  firebase_storage:
 
 dev_dependencies:
   flutter_test:

@@ -41,6 +41,10 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       final firstCategoryProducts = await _storeRepository.fetchBaseProductsForCategory(storeCategories.first);
       yield StoreStateBaseProductsLoaded(storeCategories, firstCategoryProducts);
     }
+    else {
+      final firstCategoryProducts = await _storeRepository.fetchBaseProductsForCategory(null);
+      yield StoreStateBaseProductsLoaded(storeCategories, firstCategoryProducts);
+    }
   }
 
   // Internal fields

@@ -1,16 +1,19 @@
-import 'package:nok_nok/ui/screens/store_screen/controls/products_list/compact_products_list_widget.dart';
-
-import 'bloc/store_bloc.dart';
-import 'bloc/store_state.dart';
-
-import 'package:nok_nok/ui/screens/store_screen/controls/categories_list/store_categories_list_widget.dart';
+import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
+import 'package:nok_nok/ui/theme/nok_nok_images.dart';
+import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
+import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/widgets/button_with_icon_and_subtitle.dart';
+import 'package:nok_nok/ui/widgets/products_list/compact_products_list_widget.dart';
+import 'package:nok_nok/ui/widgets/search_bar.dart';
 
 import 'package:nok_nok/ui/utils/utils.dart';
-import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 
 import 'package:nok_nok/models/store_category_item.dart';
 import 'package:nok_nok/models/store_product_base.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+
+import 'bloc/store_bloc.dart';
+import 'bloc/store_state.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -47,6 +50,15 @@ class _StoreScreenState extends State<StoreScreen> {
   // Overridden methods
 
   @override
+  void initState() {
+    super.initState();
+
+    _searchBarController.addListener(() {
+
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: CupertinoColors.white,
@@ -75,6 +87,8 @@ class _StoreScreenState extends State<StoreScreen> {
   @override
   void dispose() {
     _storeBloc.dispose();
+    _searchBarController.dispose();
+    _focusNode.dispose();
 
     super.dispose();
   }
@@ -82,17 +96,11 @@ class _StoreScreenState extends State<StoreScreen> {
   // Internal methods
 
   Widget _buildScreen(BuildContext context, StoreState state) {
-    if (state is StoreStateLoading) {
-      return buildLoadingWidget(context, "Loading store items...");
-    }
-    else if (state is StoreStateBaseProductsLoaded) {
+    if (state is StoreStateBaseProductsLoaded) {
       return _buildStoreScreen(context, state.categoryItems, state.products);
     }
-    else if (state is StoreStateCategoriesLoaded) {
-      return _buildStoreScreen(context, state.categoryItems, null);
-    }
     else {
-      return buildInvalidStateWidget();
+      return buildLoadingWidget(context, "Loading store items...");
     }
   }
 
@@ -101,36 +109,159 @@ class _StoreScreenState extends State<StoreScreen> {
                            BuiltList<StoreProductBase> products) {
     assert(categoryItems != null, "Invalid parameter value: 'categoryItems'");
 
-    final productsListWidget = _buildProductsWidget(context, products);
+    return buildScreenWidget(
+      buildContext: context,
+      headerHeight: _HeaderHeight,
+      footerHeight: _FooterHeight,
+      buildHeaderCallback: (BuildContext context) {
+        return _buildHeader(context: context);
+      },
+      buildBodyCallback: (BuildContext context) {
+        return _buildBody(context: context, products: products);
+      },
+      buildFooterCallback: (BuildContext context) {
+        return _buildFooter(context: context);
+      });
+  }
 
-    return Row(
+  Widget _buildHeader({@required BuildContext context}) {
+    return Column(
       children: [
-        // Left panel
-        Container(
-          width: StoreCategoriesListWidget.PreferredWidth,
-          child: StoreCategoriesListWidget(categoryItems)
-        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 10),
 
-        // Vertical divider
-        Container(
-          padding: EdgeInsets.only(top: DefaultVerticalPadding, bottom: DefaultVerticalPadding),
-          child: VerticalDivider(
-            indent: 0,
-            color: NokNokColors.separator,
-          ),
-        ),
-
-        // Products list
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.only(left: 8, right: 8),
-            child:
-            Center(
-              child: productsListWidget,
+            CupertinoButton(
+              child: Container(
+                  width: 23,
+                  height: 26,
+                  child: ImageIcon(NokNokImages.mainMenu,
+                      color: NokNokColors.mainThemeColor)
+              ),
+              onPressed: () {},
             ),
+            Expanded(
+              child: Center(
+                child: Container(
+                  child: CupertinoButton(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'All products',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.caption.copyWith(
+                              fontSize: NokNokFonts.caption,
+                              fontWeight: FontWeight.bold,
+                              color: NokNokColors.mainThemeColor),
+                        ),
+                        SizedBox(width: 5),
+                        Container(
+                          width: 10,
+                          height: 21,
+                          child: ImageIcon(
+                            NokNokImages.dropDown,
+                            color: NokNokColors.mainThemeColor),
+                        ),
+                      ],
+                    ),
+                    onPressed: () {
+
+                    },
+                  ),
+                ),
+              ),
+            ),
+
+            CupertinoButton(
+              child: Container(
+                  width: 29,
+                  height: 26,
+                  child: ImageIcon(NokNokImages.basket,
+                      color: NokNokColors.mainThemeColor)),
+              onPressed: () {},
+            ),
+
+            SizedBox(width: 10),
+          ],
+        ),
+
+        Container(
+          height: 50,
+          child: Row(
+            children: [
+              SizedBox(width: 17, height: 36),
+              Expanded(
+                child: SearchBar(
+                  controller: _searchBarController,
+                  focusNode: _focusNode,
+                ),
+              ),
+              CupertinoButton(
+                child: Container(
+                  width: 29,
+                  height: 44,
+                  child: ImageIcon(NokNokImages.sortAscending,
+                    color: NokNokColors.mainThemeColor)),
+                onPressed: () {},
+              ),
+              SizedBox(width: 7)
+            ],
           ),
         )
+
       ],
+    );
+  }
+
+  Widget _buildBody({@required BuildContext context,
+                     @required BuiltList<StoreProductBase> products}) {
+    return Container(
+      child: Row(
+        children: [
+          SizedBox(width: _BodyHorizontalInset),
+          Expanded(
+            child: _buildProductsWidget(context, products)
+          ),
+          SizedBox(width: _BodyHorizontalInset)
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooter({@required BuildContext context}) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Container(),
+          ),
+          ButtonWithIconAndSubtitle(
+            icon: NokNokImages.ordersHistory,
+            subtitle: "Orders history",
+            color: NokNokColors.mainThemeColor,
+            onPressed: () {
+
+            },
+          ),
+          Expanded(
+            child: Container(),
+          ),
+          ButtonWithIconAndSubtitle(
+            icon: NokNokImages.deliveryTime,
+            subtitle: "Delivery time",
+            color: NokNokColors.mainThemeColor,
+            onPressed: () {
+
+            },
+          ),
+          Expanded(
+            child: Container(),
+          ),
+        ],
+      ),
     );
   }
 
@@ -151,5 +282,11 @@ class _StoreScreenState extends State<StoreScreen> {
   // Internal fields
 
   final _storeBloc;
+  final _searchBarController = TextEditingController();
+  final _focusNode = FocusNode();
+
+  static const _HeaderHeight = 130.0;
+  static const _FooterHeight = 95.0;
+  static const _BodyHorizontalInset = 10.0;
 
 }

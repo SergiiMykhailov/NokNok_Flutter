@@ -2,7 +2,8 @@ import 'package:nok_nok/models/store_product_base.dart';
 
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:nok_nok/ui/screens/store_screen/controls/products_list/compact_products_list_item_widget.dart';
+
+import 'compact_products_list_item_widget.dart';
 
 class CompactProductsListWidget extends StatefulWidget {
 
@@ -39,7 +40,13 @@ class _CompactProductsListWidgetState extends State<CompactProductsListWidget> {
         final currentItem = _products[index];
 
         return Container(
-          child: CompactProductsListItemWidget(currentItem),
+          child: Column(
+            children: [
+              SizedBox(height: 3,),
+              CompactProductsListItemWidget(currentItem),
+              SizedBox(height: 3,),
+            ],
+          )
         );
       }
     );
