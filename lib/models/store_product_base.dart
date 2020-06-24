@@ -21,17 +21,19 @@ class StoreProductBase {
       return null;
     }
 
+    final id = json[_KeyId];
     final title = json[_KeyTitle];
     final description = json[_KeyDescription];
     final imageUrl = json[_KeyImageUrl];
     final price = json[_KeyPrice];
 
-    if (title != null &&
+    if (id != null &&
+        title != null &&
         description != null &&
         imageUrl != null &&
         price != null) {
       return StoreProductBase(
-        id: '',
+        id: id,
         title: title,
         description: description,
         price: price,
@@ -44,6 +46,7 @@ class StoreProductBase {
 
   // Internal fields
 
+  static const _KeyId = "id";
   static const _KeyTitle = "title";
   static const _KeyDescription = "description";
   static const _KeyImageUrl = "imageUrl";

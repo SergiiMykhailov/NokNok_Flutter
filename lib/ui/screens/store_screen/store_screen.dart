@@ -96,7 +96,7 @@ class _StoreScreenState extends State<StoreScreen> {
   // Internal methods
 
   Widget _buildScreen(BuildContext context, StoreState state) {
-    if (state is StoreStateBaseProductsLoaded) {
+    if (state is StoreStateLoaded) {
       return _buildStoreScreen(context, state.categoryItems, state.products);
     }
     else {
