@@ -44,6 +44,10 @@ class StoreStateLoaded extends StoreStateCategoriesLoaded {
       _totalCost = totalCost,
       super(categoryItems);
 
+  bool get canPurchase {
+    return totalCost > 0.0;
+  }
+
   // Internal fields
 
   final BuiltList<StoreProductBase> _products;

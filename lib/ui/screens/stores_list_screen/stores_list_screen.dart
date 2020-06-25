@@ -1,10 +1,10 @@
 import 'package:nok_nok/ui/routing/base_router.dart';
+import 'package:nok_nok/ui/utils/screen_utils.dart';
 
 import 'bloc/stores_list_state.dart';
 import 'bloc/stores_list_bloc.dart';
 
 import 'package:nok_nok/data_access/repositories/base/root_repository.dart';
-import 'package:nok_nok/ui/utils/utils.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

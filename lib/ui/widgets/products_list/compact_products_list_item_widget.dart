@@ -14,19 +14,28 @@ class CompactProductsListItemWidget extends StatefulWidget {
 
   static const PreferredHeight = 130.0;
 
-  CompactProductsListItemWidget(StoreProductBase product)
-    : _product = product, super() {
+  CompactProductsListItemWidget(
+    StoreProductBase product,
+    {VoidCallback onPlusButtonClicked})
+    : _product = product,
+      _onPlusButtonClicked = onPlusButtonClicked,
+      super() {
     assert(_product != null);
   }
 
   // Overridden methods
 
   @override
-  _CompactProductsListItemWidgetState createState() => _CompactProductsListItemWidgetState(_product);
+  _CompactProductsListItemWidgetState createState() =>
+    _CompactProductsListItemWidgetState(
+      _product,
+      onPlusButtonClicked: _onPlusButtonClicked
+    );
 
   // Internal fields
 
   final StoreProductBase _product;
+  final VoidCallback _onPlusButtonClicked;
 
 }
 
@@ -34,8 +43,12 @@ class _CompactProductsListItemWidgetState extends State<CompactProductsListItemW
 
   // Public methods and properties
 
-  _CompactProductsListItemWidgetState(StoreProductBase product)
-    : _product = product, super();
+  _CompactProductsListItemWidgetState(
+    StoreProductBase product,
+    {VoidCallback onPlusButtonClicked})
+    : _product = product,
+      _onPlusButtonClicked = onPlusButtonClicked,
+      super();
 
   // Overridden methods
 
@@ -104,7 +117,11 @@ class _CompactProductsListItemWidgetState extends State<CompactProductsListItemW
                         NokNokImages.addToBasket,
                         color: CupertinoColors.white),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (_onPlusButtonClicked != null) {
+                        _onPlusButtonClicked();
+                      }
+                    },
                   ),
                 ),
                 SizedBox(height: 13,)
@@ -120,6 +137,7 @@ class _CompactProductsListItemWidgetState extends State<CompactProductsListItemW
   // Internal fields
 
   final StoreProductBase _product;
+  final VoidCallback _onPlusButtonClicked;
 
   static const _ButtonDimension = 34.0;
 
