@@ -2,6 +2,7 @@ import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/widgets/basket_button.dart';
 import 'package:nok_nok/ui/widgets/button_with_icon_and_subtitle.dart';
 import 'package:nok_nok/ui/widgets/products_list/compact_products_list_widget.dart';
 import 'package:nok_nok/ui/widgets/search_bar.dart';
@@ -111,7 +112,7 @@ class _StoreScreenState extends State<StoreScreen> {
       headerHeight: _HeaderHeight,
       footerHeight: _FooterHeight,
       buildHeaderCallback: (BuildContext context) {
-        return _buildHeader(context: context);
+        return _buildHeader(context: context, state: state);
       },
       buildBodyCallback: (BuildContext context) {
         return _buildBody(context: context, state: state);
@@ -121,7 +122,10 @@ class _StoreScreenState extends State<StoreScreen> {
       });
   }
 
-  Widget _buildHeader({@required BuildContext context}) {
+  Widget _buildHeader({@required BuildContext context,
+                       @required StoreStateLoaded state}) {
+    _basketButton.itemsCount = state.totalItemsInBasket;
+
     return Column(
       children: [
         Row(
@@ -171,14 +175,7 @@ class _StoreScreenState extends State<StoreScreen> {
               ),
             ),
 
-            CupertinoButton(
-              child: Container(
-                  width: 29,
-                  height: 26,
-                  child: ImageIcon(NokNokImages.basket,
-                      color: NokNokColors.mainThemeColor)),
-              onPressed: () {},
-            ),
+            _basketButton,
 
             SizedBox(width: 10),
           ],
@@ -317,6 +314,7 @@ class _StoreScreenState extends State<StoreScreen> {
   final StoreBloc _storeBloc;
   final _searchBarController = TextEditingController();
   final _focusNode = FocusNode();
+  final _basketButton = BasketButton();
 
   static const _HeaderHeight = 130.0;
   static const _FooterHeight = 95.0;
