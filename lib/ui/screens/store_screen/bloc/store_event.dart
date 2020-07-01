@@ -11,3 +11,7 @@ class AddItemToBasketEvent extends StoreEvent {
   AddItemToBasketEvent(this.itemIndex);
 
 }
+
+class PurchaseEvent extends StoreEvent {
+
+}

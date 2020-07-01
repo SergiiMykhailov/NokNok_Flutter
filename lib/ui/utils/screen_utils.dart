@@ -12,6 +12,9 @@ const DefaultVerticalPadding = 8.0;
 const DefaultHorizontalPadding = 8.0;
 const DefaultCornerRadius = 8.0;
 
+const DefaultHeaderHeight = 130.0;
+const DefaultFooterHeight = 95.0;
+
 const DefaultButtonSize = 44.0;
 
 const DefaultAnimationDuration = 500; // milliseconds

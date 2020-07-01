@@ -1,0 +1,157 @@
+import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+
+import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
+import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
+import 'package:nok_nok/ui/utils/screen_utils.dart';
+
+import 'bloc/basket_bloc.dart';
+import 'bloc/basket_state.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:flutter/widgets.dart';
+
+class BasketScreen extends StatefulWidget {
+// Public methods and properties
+
+  BasketScreen(StoreRepository storeRepository, {Key key})
+      : _storeRepository = storeRepository,
+        super(key: key);
+
+// Overridden methods
+
+  @override
+  _BasketScreenState createState() =>
+    _BasketScreenState(storeRepository: _storeRepository);
+
+// Internal fields
+
+  final StoreRepository _storeRepository;
+}
+
+class _BasketScreenState extends State<BasketScreen> {
+  // Public methods and properties
+
+  _BasketScreenState({Key key, StoreRepository storeRepository})
+      : _basketBloc = BasketBloc(storeRepository),
+        super();
+
+  // Overridden methods
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: CupertinoColors.white,
+      child: SafeArea(
+        child: BlocListener(
+          bloc: _basketBloc,
+          // BlocBuilder invokes the builder when new state is emitted.
+          child: BlocBuilder(
+            bloc: _basketBloc,
+            // The builder function has to be a "pure function".
+            // That is, it only returns a Widget and doesn't do anything else.
+            builder: (BuildContext context, BasketState state) {
+              return _buildScreen(context, state);
+            },
+          ),
+          // Listener is the place for logging, showing Snackbars, navigating, etc.
+          // It is guaranteed to run only once per state change.
+          listener: (BuildContext context, BasketState state) {
+            _handleState(context, state);
+          },
+        )
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _basketBloc.dispose();
+
+    super.dispose();
+  }
+
+  // Internal methods
+
+  void _handleState(BuildContext context, BasketState state) {
+
+  }
+
+  Widget _buildScreen(BuildContext context, BasketState state) {
+    if (state is BasketStateLoaded) {
+      return _buildBasketScreen(context, state);
+    } else {
+      return buildLoadingWidget(context, "Loading basket items...");
+    }
+  }
+
+  Widget _buildBasketScreen(BuildContext context, BasketStateLoaded state) {
+    return buildScreenWidget(
+        buildContext: context,
+        headerHeight: DefaultHeaderHeight,
+        footerHeight: DefaultFooterHeight,
+        buildHeaderCallback: (BuildContext context) {
+          return _buildHeader(context: context, state: state);
+        },
+        buildBodyCallback: (BuildContext context) {
+          return _buildBody(context: context, state: state);
+        },
+        buildFooterCallback: (BuildContext context) {
+          return _buildFooter(context: context);
+        });
+  }
+
+  Widget _buildHeader(
+      {@required BuildContext context,
+       @required BasketStateLoaded state}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(width: 10),
+//            CupertinoButton(
+//              child: Container(
+//                  width: 23,
+//                  height: 26,
+//                  child: ImageIcon(NokNokImages.mainMenu,
+//                      color: NokNokColors.mainThemeColor)),
+//              onPressed: () {},
+//            ),
+        Expanded(
+          child: Center(
+            child: Container(
+              child: Text(
+                'Basket',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption.copyWith(
+                    fontSize: NokNokFonts.caption,
+                    fontWeight: FontWeight.bold,
+                    color: NokNokColors.mainThemeColor),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 10),
+      ],
+    );
+  }
+
+  Widget _buildBody(
+      {@required BuildContext context, @required BasketStateLoaded state}) {
+    return Container();
+  }
+
+  Widget _buildFooter({@required BuildContext context}) {
+    return Container();
+  }
+
+  // Internal fields
+
+  final BasketBloc _basketBloc;
+}

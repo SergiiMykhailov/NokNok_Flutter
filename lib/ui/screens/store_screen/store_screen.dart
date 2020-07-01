@@ -1,3 +1,4 @@
+import 'package:nok_nok/ui/routing/base_router.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
@@ -76,7 +77,7 @@ class _StoreScreenState extends State<StoreScreen> {
           // Listener is the place for logging, showing Snackbars, navigating, etc.
           // It is guaranteed to run only once per state change.
           listener: (BuildContext context, StoreState state) {
-            // Nothing to do at the moment.
+            _handleState(context, state);
           },
         )
       ),
@@ -94,6 +95,15 @@ class _StoreScreenState extends State<StoreScreen> {
 
   // Internal methods
 
+  void _handleState(BuildContext context, StoreState state) {
+    if (state is StoreStatePurchase) {
+      Navigator.pushNamed(
+        context,
+        BaseRouter.Basket,
+        arguments: state.repository);
+    }
+  }
+
   Widget _buildScreen(BuildContext context, StoreState state) {
     if (state is StoreStateLoaded) {
       return _buildStoreScreen(context, state);
@@ -109,8 +119,8 @@ class _StoreScreenState extends State<StoreScreen> {
 
     return buildScreenWidget(
       buildContext: context,
-      headerHeight: _HeaderHeight,
-      footerHeight: _FooterHeight,
+      headerHeight: DefaultHeaderHeight,
+      footerHeight: DefaultFooterHeight,
       buildHeaderCallback: (BuildContext context) {
         return _buildHeader(context: context, state: state);
       },
@@ -297,7 +307,12 @@ class _StoreScreenState extends State<StoreScreen> {
       duration: Duration(milliseconds: DefaultAnimationDuration),
       curve: Curves.fastOutSlowIn,
       height: purchaseWidgetHeight,
-      child: TotalCostWidget(state.totalCost),
+      child: TotalCostWidget(
+        state.totalCost,
+        onPurchaseClicked: () {
+          _storeBloc.purchase();
+        },
+      ),
     );
   }
 
@@ -316,8 +331,6 @@ class _StoreScreenState extends State<StoreScreen> {
   final _focusNode = FocusNode();
   final _basketButton = BasketButton();
 
-  static const _HeaderHeight = 130.0;
-  static const _FooterHeight = 95.0;
   static const _BodyHorizontalInset = 10.0;
   static const _PurchaseWidgetHeight = 115.0;
 
