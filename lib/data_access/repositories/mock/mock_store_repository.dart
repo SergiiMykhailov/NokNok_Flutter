@@ -1,3 +1,4 @@
+import 'package:nok_nok/models/basket.dart';
 import 'package:nok_nok/models/store_category_item.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 
@@ -110,6 +111,11 @@ class MockStoreRepository implements StoreRepository {
                                                        () => result);
   }
 
+  @override
+  Basket getBasket() {
+    return _basket;
+  }
+
   // Internal methods
 
   MockStoreRepository._setup() {
@@ -117,6 +123,8 @@ class MockStoreRepository implements StoreRepository {
   }
 
   // Internal fields
+
+  final _basket = Basket();
 
   static final _instance = new MockStoreRepository._setup();
 

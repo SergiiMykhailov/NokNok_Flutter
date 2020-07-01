@@ -2,6 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+import 'package:nok_nok/models/basket.dart';
 import 'package:nok_nok/models/store_category_item.dart';
 import 'package:nok_nok/models/store_product_base.dart';
 
@@ -56,9 +57,16 @@ class FirebaseStoreRepository extends StoreRepository {
     return BuiltList<StoreProductBase>.from(result);
   }
 
+  @override
+  Basket getBasket() {
+    return _basket;
+  }
+
   // Internal methods
 
   // Internal fields
+
+  final _basket = Basket();
 
   final DatabaseReference _storeNode;
   final _storage = FirebaseStorage.instance.ref();

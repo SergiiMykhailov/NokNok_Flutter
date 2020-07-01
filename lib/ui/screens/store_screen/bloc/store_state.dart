@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:nok_nok/models/store_category_item.dart';
 
 import 'package:built_collection/built_collection.dart';
@@ -26,18 +27,31 @@ class StoreStateCategoriesLoaded extends StoreState {
 
 }
 
-class StoreStateBaseProductsLoaded extends StoreStateCategoriesLoaded {
+class StoreStateLoaded extends StoreStateCategoriesLoaded {
 
   // Public methods and properties
 
   BuiltList<StoreProductBase> get products => _products;
+  int get totalItemsInBasket => _totalItemsInBasket;
+  double get totalCost => _totalCost;
 
-  StoreStateBaseProductsLoaded(BuiltList<StoreCategoryItem> categoryItems,
-                               BuiltList<StoreProductBase> products)
-    : _products = products, super(categoryItems);
+  StoreStateLoaded({@required BuiltList<StoreCategoryItem> categoryItems,
+                    @required BuiltList<StoreProductBase> products,
+                    @required int totalItemsInBasket,
+                    @required double totalCost})
+    : _products = products,
+      _totalItemsInBasket = totalItemsInBasket,
+      _totalCost = totalCost,
+      super(categoryItems);
+
+  bool get canPurchase {
+    return totalCost > 0.0;
+  }
 
   // Internal fields
 
   final BuiltList<StoreProductBase> _products;
+  final int _totalItemsInBasket;
+  final double _totalCost;
 
 }

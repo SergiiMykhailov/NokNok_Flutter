@@ -15,6 +15,7 @@ class NokNokColors {
   static const Color separator = Color(0xFFD0CFCF);
 
   static const Color mainThemeColor = Color(0xFF774C10);
+  static const Color buttonColor = Color(0xFF816339);
   static const Color caption = Color(0xFF666666);
 
   static const Color productTitle = Color(0xFF007AFF);

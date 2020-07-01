@@ -5,21 +5,32 @@ import 'package:flutter/cupertino.dart';
 
 import 'compact_products_list_item_widget.dart';
 
+typedef ItemActionCallback = void Function(int itemIndex);
+
 class CompactProductsListWidget extends StatefulWidget {
 
   // Public methods and properties
 
-  CompactProductsListWidget(BuiltList<StoreProductBase> products)
-    : _products = products, super();
+  CompactProductsListWidget(
+    BuiltList<StoreProductBase> products,
+    {ItemActionCallback onItemAppended})
+    : _products = products,
+      _onItemAppended = onItemAppended,
+      super();
 
   // Overridden methods
 
   @override
-  _CompactProductsListWidgetState createState() => _CompactProductsListWidgetState(_products);
+  _CompactProductsListWidgetState createState() =>
+    _CompactProductsListWidgetState(
+      _products,
+      onItemAppended: _onItemAppended
+    );
 
   // Internal fields
 
   final BuiltList<StoreProductBase> _products;
+  final ItemActionCallback _onItemAppended;
 
 }
 
@@ -27,8 +38,12 @@ class _CompactProductsListWidgetState extends State<CompactProductsListWidget> {
 
   // Public methods and properties
 
-  _CompactProductsListWidgetState(BuiltList<StoreProductBase> products)
-    : _products = products, super();
+  _CompactProductsListWidgetState(
+    BuiltList<StoreProductBase> products,
+    {ItemActionCallback onItemAppended})
+    : _products = products,
+      _onItemAppended = onItemAppended,
+      super();
 
   // Overridden methods
 
@@ -43,7 +58,14 @@ class _CompactProductsListWidgetState extends State<CompactProductsListWidget> {
           child: Column(
             children: [
               SizedBox(height: 3,),
-              CompactProductsListItemWidget(currentItem),
+              CompactProductsListItemWidget(
+                currentItem,
+                onPlusButtonClicked: () {
+                  if (_onItemAppended != null) {
+                    _onItemAppended(index);
+                  }
+                },
+              ),
               SizedBox(height: 3,),
             ],
           )
@@ -55,5 +77,6 @@ class _CompactProductsListWidgetState extends State<CompactProductsListWidget> {
   // Internal fields
 
   final BuiltList<StoreProductBase> _products;
+  final ItemActionCallback _onItemAppended;
 
 }

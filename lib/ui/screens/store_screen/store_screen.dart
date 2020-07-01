@@ -2,15 +2,14 @@ import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/widgets/basket_button.dart';
 import 'package:nok_nok/ui/widgets/button_with_icon_and_subtitle.dart';
 import 'package:nok_nok/ui/widgets/products_list/compact_products_list_widget.dart';
 import 'package:nok_nok/ui/widgets/search_bar.dart';
 
-import 'package:nok_nok/ui/utils/utils.dart';
-
-import 'package:nok_nok/models/store_category_item.dart';
 import 'package:nok_nok/models/store_product_base.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+import 'package:nok_nok/ui/widgets/total_cost_widget.dart';
 
 import 'bloc/store_bloc.dart';
 import 'bloc/store_state.dart';
@@ -96,8 +95,8 @@ class _StoreScreenState extends State<StoreScreen> {
   // Internal methods
 
   Widget _buildScreen(BuildContext context, StoreState state) {
-    if (state is StoreStateBaseProductsLoaded) {
-      return _buildStoreScreen(context, state.categoryItems, state.products);
+    if (state is StoreStateLoaded) {
+      return _buildStoreScreen(context, state);
     }
     else {
       return buildLoadingWidget(context, "Loading store items...");
@@ -105,26 +104,28 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget _buildStoreScreen(BuildContext context,
-                           BuiltList<StoreCategoryItem> categoryItems,
-                           BuiltList<StoreProductBase> products) {
-    assert(categoryItems != null, "Invalid parameter value: 'categoryItems'");
+                           StoreStateLoaded state) {
+    assert(state.categoryItems != null, "Invalid parameter value: 'categoryItems'");
 
     return buildScreenWidget(
       buildContext: context,
       headerHeight: _HeaderHeight,
       footerHeight: _FooterHeight,
       buildHeaderCallback: (BuildContext context) {
-        return _buildHeader(context: context);
+        return _buildHeader(context: context, state: state);
       },
       buildBodyCallback: (BuildContext context) {
-        return _buildBody(context: context, products: products);
+        return _buildBody(context: context, state: state);
       },
       buildFooterCallback: (BuildContext context) {
         return _buildFooter(context: context);
       });
   }
 
-  Widget _buildHeader({@required BuildContext context}) {
+  Widget _buildHeader({@required BuildContext context,
+                       @required StoreStateLoaded state}) {
+    _basketButton.itemsCount = state.totalItemsInBasket;
+
     return Column(
       children: [
         Row(
@@ -174,14 +175,7 @@ class _StoreScreenState extends State<StoreScreen> {
               ),
             ),
 
-            CupertinoButton(
-              child: Container(
-                  width: 29,
-                  height: 26,
-                  child: ImageIcon(NokNokImages.basket,
-                      color: NokNokColors.mainThemeColor)),
-              onPressed: () {},
-            ),
+            _basketButton,
 
             SizedBox(width: 10),
           ],
@@ -216,13 +210,20 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget _buildBody({@required BuildContext context,
-                     @required BuiltList<StoreProductBase> products}) {
+                     @required StoreStateLoaded state}) {
     return Container(
       child: Row(
         children: [
           SizedBox(width: _BodyHorizontalInset),
           Expanded(
-            child: _buildProductsWidget(context, products)
+            child: Column(
+              children: [
+                Expanded(
+                  child: _buildProductsWidget(context, state.products),
+                ),
+                _buildTotalCostWidget(context, state)
+              ],
+            )
           ),
           SizedBox(width: _BodyHorizontalInset)
         ],
@@ -271,22 +272,53 @@ class _StoreScreenState extends State<StoreScreen> {
       return _buildProductsLoadingWidget(context);
     }
     else {
-      return CompactProductsListWidget(products);
+      return Row(
+        children: [
+          SizedBox(width: _BodyHorizontalInset),
+          Expanded(
+            child: CompactProductsListWidget(
+              products,
+              onItemAppended: (int itemIndex) {
+                _handleAppendItemWithIndex(itemIndex);
+              },
+            )
+          ),
+          SizedBox(width: _BodyHorizontalInset)
+        ],
+      );
     }
+  }
+
+  Widget _buildTotalCostWidget(BuildContext context,
+                               StoreStateLoaded state) {
+    final purchaseWidgetHeight = state.canPurchase ? _PurchaseWidgetHeight : 0.0;
+
+    return AnimatedContainer(
+      duration: Duration(milliseconds: DefaultAnimationDuration),
+      curve: Curves.fastOutSlowIn,
+      height: purchaseWidgetHeight,
+      child: TotalCostWidget(state.totalCost),
+    );
   }
 
   Widget _buildProductsLoadingWidget(BuildContext context) {
     return buildLoadingWidget(context, "Loading products list...");
   }
 
+  void _handleAppendItemWithIndex(int itemIndex) {
+    _storeBloc.addItemToBasket(itemIndex: itemIndex);
+  }
+
   // Internal fields
 
-  final _storeBloc;
+  final StoreBloc _storeBloc;
   final _searchBarController = TextEditingController();
   final _focusNode = FocusNode();
+  final _basketButton = BasketButton();
 
   static const _HeaderHeight = 130.0;
   static const _FooterHeight = 95.0;
   static const _BodyHorizontalInset = 10.0;
+  static const _PurchaseWidgetHeight = 115.0;
 
 }
