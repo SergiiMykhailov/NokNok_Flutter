@@ -1,8 +1,10 @@
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
+import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/widgets/basket_list/basket_list.dart';
 
 import 'bloc/basket_bloc.dart';
 import 'bloc/basket_state.dart';
@@ -95,8 +97,8 @@ class _BasketScreenState extends State<BasketScreen> {
   Widget _buildBasketScreen(BuildContext context, BasketStateLoaded state) {
     return buildScreenWidget(
         buildContext: context,
-        headerHeight: DefaultHeaderHeight,
-        footerHeight: DefaultFooterHeight,
+        headerHeight: _HeaderHeight,
+        footerHeight: _FooterHeight,
         buildHeaderCallback: (BuildContext context) {
           return _buildHeader(context: context, state: state);
         },
@@ -114,15 +116,16 @@ class _BasketScreenState extends State<BasketScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(width: 10),
-//            CupertinoButton(
-//              child: Container(
-//                  width: 23,
-//                  height: 26,
-//                  child: ImageIcon(NokNokImages.mainMenu,
-//                      color: NokNokColors.mainThemeColor)),
-//              onPressed: () {},
-//            ),
+        CupertinoButton(
+          child: Container(
+            width: 15,
+            height: 44,
+            child: ImageIcon(NokNokImages.back,
+              color: NokNokColors.mainThemeColor)),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         Expanded(
           child: Center(
             child: Container(
@@ -130,28 +133,64 @@ class _BasketScreenState extends State<BasketScreen> {
                 'Basket',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
-                    fontSize: NokNokFonts.caption,
-                    fontWeight: FontWeight.bold,
-                    color: NokNokColors.mainThemeColor),
+                  fontSize: NokNokFonts.caption,
+                  fontWeight: FontWeight.bold,
+                  color: NokNokColors.mainThemeColor),
               ),
             ),
           ),
         ),
-        SizedBox(width: 10),
+        CupertinoButton(
+          child: Container(
+            width: 24,
+            height: 24,
+            child: ImageIcon(NokNokImages.ordersHistory,
+              color: NokNokColors.mainThemeColor)),
+          onPressed: () {},
+        ),
+        SizedBox(width: 3),
       ],
     );
   }
 
   Widget _buildBody(
       {@required BuildContext context, @required BasketStateLoaded state}) {
-    return Container();
+
+      return Row(
+        children: [
+          SizedBox(width: DefaultBodyHorizontalInset),
+          Expanded(
+            child: BasketListWidget(
+              state.basket,
+              onItemAppended: (int itemIndex) {
+                _handleAppendItemWithIndex(itemIndex);
+              },
+              onItemRemoved: (int itemIndex) {
+                _handleRemoveItemWithIndex(itemIndex);
+              },
+            )
+          ),
+          SizedBox(width: DefaultBodyHorizontalInset)
+        ],
+      );
   }
 
   Widget _buildFooter({@required BuildContext context}) {
     return Container();
   }
 
+  void _handleAppendItemWithIndex(int itemIndex) {
+
+  }
+
+  void _handleRemoveItemWithIndex(int itemIndex) {
+
+  }
+
   // Internal fields
 
   final BasketBloc _basketBloc;
+
+  static const _HeaderHeight = 90.0;
+  static const _FooterHeight = 135.0;
 }

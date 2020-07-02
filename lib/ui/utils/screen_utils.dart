@@ -14,6 +14,7 @@ const DefaultCornerRadius = 8.0;
 
 const DefaultHeaderHeight = 130.0;
 const DefaultFooterHeight = 95.0;
+const DefaultBodyHorizontalInset = 10.0;
 
 const DefaultButtonSize = 44.0;
 

@@ -106,7 +106,18 @@ class _StoreScreenState extends State<StoreScreen> {
 
   Widget _buildScreen(BuildContext context, StoreState state) {
     if (state is StoreStateLoaded) {
-      return _buildStoreScreen(context, state);
+      return _buildStoreScreen(
+        context,
+        state.totalItemsInBasket,
+        state.totalCost,
+        state.products);
+    }
+    else if (state is StoreStatePurchase) {
+      return _buildStoreScreen(
+        context,
+        state.totalItemsInBasket,
+        state.totalCost,
+        state.products);
     }
     else {
       return buildLoadingWidget(context, "Loading store items...");
@@ -114,18 +125,18 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget _buildStoreScreen(BuildContext context,
-                           StoreStateLoaded state) {
-    assert(state.categoryItems != null, "Invalid parameter value: 'categoryItems'");
-
+                           int totalItemsInBasket,
+                           double totalCost,
+                           BuiltList<StoreProductBase> products) {
     return buildScreenWidget(
       buildContext: context,
       headerHeight: DefaultHeaderHeight,
       footerHeight: DefaultFooterHeight,
       buildHeaderCallback: (BuildContext context) {
-        return _buildHeader(context: context, state: state);
+        return _buildHeader(context: context, totalItemsInBasket: totalItemsInBasket);
       },
       buildBodyCallback: (BuildContext context) {
-        return _buildBody(context: context, state: state);
+        return _buildBody(context: context, products: products, totalCost: totalCost);
       },
       buildFooterCallback: (BuildContext context) {
         return _buildFooter(context: context);
@@ -133,8 +144,8 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget _buildHeader({@required BuildContext context,
-                       @required StoreStateLoaded state}) {
-    _basketButton.itemsCount = state.totalItemsInBasket;
+                       @required int totalItemsInBasket}) {
+    _basketButton.itemsCount = totalItemsInBasket;
 
     return Column(
       children: [
@@ -220,22 +231,23 @@ class _StoreScreenState extends State<StoreScreen> {
   }
 
   Widget _buildBody({@required BuildContext context,
-                     @required StoreStateLoaded state}) {
+                     @required BuiltList<StoreProductBase> products,
+                     @required double totalCost}) {
     return Container(
       child: Row(
         children: [
-          SizedBox(width: _BodyHorizontalInset),
+          SizedBox(width: DefaultBodyHorizontalInset),
           Expanded(
             child: Column(
               children: [
                 Expanded(
-                  child: _buildProductsWidget(context, state.products),
+                  child: _buildProductsWidget(context, products),
                 ),
-                _buildTotalCostWidget(context, state)
+                _buildTotalCostWidget(context, totalCost)
               ],
             )
           ),
-          SizedBox(width: _BodyHorizontalInset)
+          SizedBox(width: DefaultBodyHorizontalInset)
         ],
       ),
     );
@@ -284,7 +296,7 @@ class _StoreScreenState extends State<StoreScreen> {
     else {
       return Row(
         children: [
-          SizedBox(width: _BodyHorizontalInset),
+          SizedBox(width: DefaultBodyHorizontalInset),
           Expanded(
             child: CompactProductsListWidget(
               products,
@@ -293,22 +305,23 @@ class _StoreScreenState extends State<StoreScreen> {
               },
             )
           ),
-          SizedBox(width: _BodyHorizontalInset)
+          SizedBox(width: DefaultBodyHorizontalInset)
         ],
       );
     }
   }
 
   Widget _buildTotalCostWidget(BuildContext context,
-                               StoreStateLoaded state) {
-    final purchaseWidgetHeight = state.canPurchase ? _PurchaseWidgetHeight : 0.0;
+                               double totalCost) {
+    final canPurchase = totalCost > 0;
+    final purchaseWidgetHeight = canPurchase ? _PurchaseWidgetHeight : 0.0;
 
     return AnimatedContainer(
       duration: Duration(milliseconds: DefaultAnimationDuration),
       curve: Curves.fastOutSlowIn,
       height: purchaseWidgetHeight,
       child: TotalCostWidget(
-        state.totalCost,
+        totalCost,
         onPurchaseClicked: () {
           _storeBloc.purchase();
         },
@@ -331,7 +344,6 @@ class _StoreScreenState extends State<StoreScreen> {
   final _focusNode = FocusNode();
   final _basketButton = BasketButton();
 
-  static const _BodyHorizontalInset = 10.0;
   static const _PurchaseWidgetHeight = 115.0;
 
 }

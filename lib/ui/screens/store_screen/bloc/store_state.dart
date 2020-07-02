@@ -62,11 +62,25 @@ class StoreStatePurchase extends StoreState {
   // Public methods and properties
 
   StoreRepository get repository => _repository;
+  BuiltList<StoreProductBase> get products => _products;
+  int get totalItemsInBasket => _totalItemsInBasket;
+  double get totalCost => _totalCost;
 
-  StoreStatePurchase(this._repository);
+  StoreStatePurchase(
+    this._repository,
+    {@required BuiltList<StoreProductBase> products,
+     @required int totalItemsInBasket,
+     @required double totalCost})
+    : _products = products,
+      _totalItemsInBasket = totalItemsInBasket,
+      _totalCost = totalCost,
+      super();
 
   // Internal fields
 
   final StoreRepository _repository;
+  final BuiltList<StoreProductBase> _products;
+  final int _totalItemsInBasket;
+  final double _totalCost;
 
 }

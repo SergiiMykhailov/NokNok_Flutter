@@ -46,7 +46,12 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       yield* _handleAddItem(event.itemIndex);
     }
     else if (event is PurchaseEvent) {
-      yield StoreStatePurchase(_storeRepository);
+      yield StoreStatePurchase(
+        _storeRepository,
+        products: _currentProductsList,
+        totalCost: _storeRepository.getBasket().totalCost,
+        totalItemsInBasket: _storeRepository.getBasket().totalItemsCount
+      );
     }
   }
 
