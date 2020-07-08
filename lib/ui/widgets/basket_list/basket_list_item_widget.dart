@@ -17,14 +17,15 @@ class BasketListItemWidget extends StatefulWidget {
 
   BasketListItemWidget(
     BasketItem basketItem,
-    {VoidCallback onPlusButtonClicked,
+    {Key key,
+     VoidCallback onPlusButtonClicked,
      VoidCallback onMinusButtonClicked,
      VoidCallback onRemoveButtonClicked})
     : _basketItem = basketItem,
       _onPlusButtonClicked = onPlusButtonClicked,
       _onMinusButtonClicked = onMinusButtonClicked,
       _onRemoveButtonClicked = onRemoveButtonClicked,
-      super() {
+      super(key: key) {
     assert(_basketItem != null);
   }
 
@@ -35,7 +36,8 @@ class BasketListItemWidget extends StatefulWidget {
     _BasketListItemWidgetState(
       _basketItem,
       onPlusButtonClicked: _onPlusButtonClicked,
-      onMinusButtonClicked: _onMinusButtonClicked
+      onMinusButtonClicked: _onMinusButtonClicked,
+      onRemoveButtonClicked: _onRemoveButtonClicked
     );
 
   // Internal fields
@@ -109,8 +111,8 @@ class _BasketListItemWidgetState extends State<BasketListItemWidget> {
                         height: BasketItemsPickerWidget.PreferredHeight,
                         child: BasketItemsPickerWidget(
                           _basketItem.quantity,
-                          _onMinusButtonClicked,
-                          _onPlusButtonClicked
+                          _onPlusButtonClicked,
+                          _onMinusButtonClicked
                         ),
                       ),
                       SizedBox(width: 7,),
@@ -166,7 +168,5 @@ class _BasketListItemWidgetState extends State<BasketListItemWidget> {
   final VoidCallback _onPlusButtonClicked;
   final VoidCallback _onMinusButtonClicked;
   final VoidCallback _onRemoveButtonClicked;
-
-  static const _ButtonDimension = 34.0;
 
 }

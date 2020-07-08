@@ -19,7 +19,7 @@ class Basket {
     }
   }
 
-  void removeProduct(StoreProductBase product) {
+  void decrementProduct(StoreProductBase product) {
     final existingItemIndex =
       _items.indexWhere((currentElement) => currentElement._product.id == product.id);
 
@@ -30,6 +30,15 @@ class Basket {
       if (existingItem.quantity == 0) {
         _items.removeAt(existingItemIndex);
       }
+    }
+  }
+
+  void removeProduct(StoreProductBase product) {
+    final existingItemIndex =
+      _items.indexWhere((currentElement) => currentElement._product.id == product.id);
+
+    if (existingItemIndex >= 0) {
+      _items.removeAt(existingItemIndex);
     }
   }
 

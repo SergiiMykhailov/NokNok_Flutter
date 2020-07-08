@@ -14,9 +14,11 @@ class BasketListWidget extends StatefulWidget {
   BasketListWidget(
     Basket basket,
     {ItemActionCallback onItemAppended,
+     ItemActionCallback onItemDecreased,
      ItemActionCallback onItemRemoved})
     : _basket = basket,
       _onItemAppended = onItemAppended,
+      _onItemDecreased = onItemDecreased,
       _onItemRemoved = onItemRemoved,
       super() {
     assert(_basket != null);
@@ -29,6 +31,7 @@ class BasketListWidget extends StatefulWidget {
     _BasketListWidgetState(
       _basket,
       onItemAppended: _onItemAppended,
+      onItemDecreased: _onItemDecreased,
       onItemRemoved: _onItemRemoved
     );
 
@@ -36,6 +39,7 @@ class BasketListWidget extends StatefulWidget {
 
   final Basket _basket;
   final ItemActionCallback _onItemAppended;
+  final ItemActionCallback _onItemDecreased;
   final ItemActionCallback _onItemRemoved;
 
 }
@@ -47,9 +51,11 @@ class _BasketListWidgetState extends State<BasketListWidget> {
   _BasketListWidgetState(
     Basket basket,
     {ItemActionCallback onItemAppended,
+     ItemActionCallback onItemDecreased,
      ItemActionCallback onItemRemoved})
     : _basket = basket,
       _onItemAppended = onItemAppended,
+      _onItemDecreased = onItemDecreased,
       _onItemRemoved = onItemRemoved,
       super();
 
@@ -68,12 +74,18 @@ class _BasketListWidgetState extends State<BasketListWidget> {
               SizedBox(height: 3,),
               BasketListItemWidget(
                 currentItem,
+                key: UniqueKey(),
                 onPlusButtonClicked: () {
                   if (_onItemAppended != null) {
                     _onItemAppended(index);
                   }
                 },
                 onMinusButtonClicked: () {
+                  if (_onItemDecreased != null) {
+                    _onItemDecreased(index);
+                  }
+                },
+                onRemoveButtonClicked: () {
                   if (_onItemRemoved != null) {
                     _onItemRemoved(index);
                   }
@@ -91,6 +103,7 @@ class _BasketListWidgetState extends State<BasketListWidget> {
 
   final Basket _basket;
   final ItemActionCallback _onItemAppended;
+  final ItemActionCallback _onItemDecreased;
   final ItemActionCallback _onItemRemoved;
 
 }

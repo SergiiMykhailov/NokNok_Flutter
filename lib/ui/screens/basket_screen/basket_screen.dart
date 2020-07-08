@@ -166,6 +166,9 @@ class _BasketScreenState extends State<BasketScreen> {
               onItemAppended: (int itemIndex) {
                 _handleAppendItemWithIndex(itemIndex);
               },
+              onItemDecreased: (int itemIndex) {
+                _handleDecrementItemWithIndex(itemIndex);
+              },
               onItemRemoved: (int itemIndex) {
                 _handleRemoveItemWithIndex(itemIndex);
               },
@@ -222,11 +225,15 @@ class _BasketScreenState extends State<BasketScreen> {
   }
 
   void _handleAppendItemWithIndex(int itemIndex) {
+    _basketBloc.appendItemWithIndex(itemIndex);
+  }
 
+  void _handleDecrementItemWithIndex(int itemIndex) {
+    _basketBloc.decrementItemWithIndex(itemIndex);
   }
 
   void _handleRemoveItemWithIndex(int itemIndex) {
-
+    _basketBloc.removeItemWithIndex(itemIndex);
   }
 
   // Internal fields
