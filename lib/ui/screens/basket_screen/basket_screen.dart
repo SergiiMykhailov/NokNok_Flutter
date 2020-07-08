@@ -5,6 +5,7 @@ import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
 import 'package:nok_nok/ui/widgets/basket_list/basket_list.dart';
+import 'package:nok_nok/ui/widgets/total_cost_widget.dart';
 
 import 'bloc/basket_bloc.dart';
 import 'bloc/basket_state.dart';
@@ -106,7 +107,7 @@ class _BasketScreenState extends State<BasketScreen> {
           return _buildBody(context: context, state: state);
         },
         buildFooterCallback: (BuildContext context) {
-          return _buildFooter(context: context);
+          return _buildFooter(context: context, state: state);
         });
   }
 
@@ -175,8 +176,49 @@ class _BasketScreenState extends State<BasketScreen> {
       );
   }
 
-  Widget _buildFooter({@required BuildContext context}) {
-    return Container();
+  Widget _buildFooter({@required BuildContext context,
+                       @required BasketStateLoaded state}) {
+    return Column(
+      children: [
+        SizedBox(height: 10,),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 14,),
+            Text(
+              'Delivery:',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                fontSize: NokNokFonts.caption,
+                color: NokNokColors.mainThemeColor),
+            ),
+            Expanded(child: Container()),
+            Text(
+              'Free',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                fontSize: NokNokFonts.caption,
+                color: NokNokColors.mainThemeColor),
+            ),
+            SizedBox(width: 17,)
+          ],
+        ),
+        SizedBox(height: 25),
+        Row(
+          children: [
+            Expanded(child: Container(),),
+            Container(
+              height: 51,
+              child: TotalCostWidget(
+                state.basket.totalCost,
+                onPurchaseClicked: () {},
+              ),
+            ),
+            Expanded(child: Container(),),
+          ],
+        ),
+      ],
+    );
   }
 
   void _handleAppendItemWithIndex(int itemIndex) {
