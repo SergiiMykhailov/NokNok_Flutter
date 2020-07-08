@@ -6,6 +6,7 @@ import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/utils/utils.dart';
 import 'package:nok_nok/ui/widgets/basket_items_picker.dart';
 
 class BasketListItemWidget extends StatefulWidget {
@@ -17,10 +18,12 @@ class BasketListItemWidget extends StatefulWidget {
   BasketListItemWidget(
     BasketItem basketItem,
     {VoidCallback onPlusButtonClicked,
-     VoidCallback onMinusButtonClicked})
+     VoidCallback onMinusButtonClicked,
+     VoidCallback onRemoveButtonClicked})
     : _basketItem = basketItem,
       _onPlusButtonClicked = onPlusButtonClicked,
       _onMinusButtonClicked = onMinusButtonClicked,
+      _onRemoveButtonClicked = onRemoveButtonClicked,
       super() {
     assert(_basketItem != null);
   }
@@ -40,6 +43,7 @@ class BasketListItemWidget extends StatefulWidget {
   final BasketItem _basketItem;
   final VoidCallback _onPlusButtonClicked;
   final VoidCallback _onMinusButtonClicked;
+  final VoidCallback _onRemoveButtonClicked;
 
 }
 
@@ -50,10 +54,12 @@ class _BasketListItemWidgetState extends State<BasketListItemWidget> {
   _BasketListItemWidgetState(
     BasketItem basketItem,
     {VoidCallback onPlusButtonClicked,
-     VoidCallback onMinusButtonClicked})
+     VoidCallback onMinusButtonClicked,
+     VoidCallback onRemoveButtonClicked})
     : _basketItem = basketItem,
       _onPlusButtonClicked = onPlusButtonClicked,
       _onMinusButtonClicked = onMinusButtonClicked,
+      _onRemoveButtonClicked = onRemoveButtonClicked,
       super();
 
   // Overridden methods
@@ -121,30 +127,30 @@ class _BasketListItemWidgetState extends State<BasketListItemWidget> {
               ),
             ),
             Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Expanded(child: Container(),),
-                Container(
-                  width: _ButtonDimension,
-                  height: _ButtonDimension,
-                  child: CupertinoButton(
-                    borderRadius: BorderRadius.all(Radius.circular(_ButtonDimension / 2)),
-                    color: NokNokColors.addToBasket,
-                    padding: EdgeInsets.zero,
-                    child: Container(
-                      width: _ButtonDimension,
-                      height: _ButtonDimension,
-                      child: ImageIcon(
-                        NokNokImages.addToBasket,
-                        color: CupertinoColors.white),
-                    ),
-                    onPressed: () {
-                      if (_onPlusButtonClicked != null) {
-                        _onPlusButtonClicked();
-                      }
-                    },
+                CupertinoButton(
+                  child: Container(
+                      width: 21,
+                      height: 24,
+                      child: ImageIcon(NokNokImages.trashBin,
+                          color: NokNokColors.mainThemeColor)
                   ),
+                  onPressed: () {
+                    if (_onRemoveButtonClicked != null) {
+                      _onRemoveButtonClicked();
+                    }
+                  },
                 ),
-                SizedBox(height: 13,)
+                Expanded(child: Container()),
+                Text(
+                  formatPrice(_basketItem.product.price),
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                    fontSize: NokNokFonts.productPrice,
+                    fontWeight: FontWeight.bold,
+                    color: NokNokColors.mainThemeColor),
+                ),
+                SizedBox(height: 15,)
               ],
             ),
             SizedBox(width: 13,)
@@ -159,6 +165,7 @@ class _BasketListItemWidgetState extends State<BasketListItemWidget> {
   final BasketItem _basketItem;
   final VoidCallback _onPlusButtonClicked;
   final VoidCallback _onMinusButtonClicked;
+  final VoidCallback _onRemoveButtonClicked;
 
   static const _ButtonDimension = 34.0;
 
