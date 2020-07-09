@@ -19,8 +19,7 @@ class StoresListScreen extends StatefulWidget {
                    {Key key})
     : _rootRepository = rootRepository,
       _router = router,
-      super(key: key) {
-  }
+      super(key: key);
 
   @override
   _StoresListScreenState createState() => _StoresListScreenState(_rootRepository, _router);

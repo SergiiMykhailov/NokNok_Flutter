@@ -2,6 +2,8 @@ import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nok_nok/models/store_category_item.dart';
 import 'package:nok_nok/models/store_product_base.dart';
+import 'package:nok_nok/ui/routing/build_context_provider.dart';
+import 'package:nok_nok/ui/screens/store_screen/routing/store_screen_router.dart';
 
 import 'store_event.dart';
 import 'store_state.dart';
@@ -13,10 +15,14 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
 
   // Public methods and properties
 
+  BuildContextProvider buildContextProvider;
   StoreRepository get storeRepository => _storeRepository;
 
-  StoreBloc(this._storeRepository)
+  StoreBloc(this._storeRepository,
+            this._router)
     : super() {
+    assert(_router != null);
+
     reload();
   }
 
@@ -46,12 +52,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
       yield* _handleAddItem(event.itemIndex);
     }
     else if (event is PurchaseEvent) {
-      yield StoreStatePurchase(
-        _storeRepository,
-        products: _currentProductsList,
-        totalCost: _storeRepository.getBasket().totalCost,
-        totalItemsInBasket: _storeRepository.getBasket().totalItemsCount
-      );
+      _handlePurchase();
     }
   }
 
@@ -79,6 +80,16 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     }
   }
 
+  void _handlePurchase() {
+    if (buildContextProvider == null) {
+      print('Build context provider is not set for StoreBloc, Unable to navigate to basket.');
+    }
+    else {
+      final context = buildContextProvider.getContext();
+      _router.navigateToBasket(context, _storeRepository);
+    }
+  }
+
   Stream<StoreState> _handleAddItem(int itemIndex) async* {
     if (_currentProductsList == null ||
       itemIndex >= _currentProductsList.length) {
@@ -102,6 +113,7 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
   // Internal fields
 
   StoreRepository _storeRepository;
+  StoreScreenRouter _router;
   BuiltList<StoreCategoryItem> _currentCategories;
   BuiltList<StoreProductBase> _currentProductsList;
 

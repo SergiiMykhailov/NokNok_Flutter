@@ -1,4 +1,4 @@
-import 'package:nok_nok/ui/routing/app_router_factory.dart';
+import 'package:nok_nok/ui/routing/app_routing/app_router_factory.dart';
 import 'package:nok_nok/ui/routing/base_router.dart';
 import 'package:nok_nok/ui/routing/router_factory.dart';
 

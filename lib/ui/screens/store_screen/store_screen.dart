@@ -1,4 +1,5 @@
-import 'package:nok_nok/ui/routing/base_router.dart';
+import 'package:nok_nok/ui/routing/build_context_provider.dart';
+import 'package:nok_nok/ui/screens/store_screen/routing/store_screen_router.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
@@ -26,26 +27,37 @@ class StoreScreen extends StatefulWidget {
 
   // Public methods and properties
 
-  StoreScreen(StoreRepository storeRepository, {Key key})
-   : _storeRepository = storeRepository, super(key: key);
+  StoreScreen(StoreRepository storeRepository,
+              StoreScreenRouter router,
+              {Key key})
+   : _storeRepository = storeRepository,
+     _router = router,
+      super(key: key);
 
   // Overridden methods
 
   @override
-  _StoreScreenState createState() => _StoreScreenState(storeRepository: _storeRepository);
+  _StoreScreenState createState() => _StoreScreenState(_storeRepository, _router);
 
   // Internal fields
 
   final StoreRepository _storeRepository;
+  final StoreScreenRouter _router;
 
 }
 
-class _StoreScreenState extends State<StoreScreen> {
+class _StoreScreenState extends State<StoreScreen>
+                        with BuildContextProvider {
 
   // Public methods and properties
 
-  _StoreScreenState({Key key, StoreRepository storeRepository})
-    : _storeBloc = StoreBloc(storeRepository), super();
+  _StoreScreenState(StoreRepository storeRepository,
+                    StoreScreenRouter router,
+                    {Key key})
+    : _storeBloc = StoreBloc(storeRepository, router),
+      super() {
+    _storeBloc.buildContextProvider = this;
+  }
 
   // Overridden methods
 
@@ -56,6 +68,11 @@ class _StoreScreenState extends State<StoreScreen> {
     _searchBarController.addListener(() {
 
     });
+  }
+
+  @override
+  BuildContext getContext() {
+    return context;
   }
 
   @override
@@ -77,7 +94,6 @@ class _StoreScreenState extends State<StoreScreen> {
           // Listener is the place for logging, showing Snackbars, navigating, etc.
           // It is guaranteed to run only once per state change.
           listener: (BuildContext context, StoreState state) {
-            _handleState(context, state);
           },
         )
       ),
@@ -95,24 +111,8 @@ class _StoreScreenState extends State<StoreScreen> {
 
   // Internal methods
 
-  void _handleState(BuildContext context, StoreState state) {
-    if (state is StoreStatePurchase) {
-      Navigator.pushNamed(
-        context,
-        BaseRouter.Basket,
-        arguments: state.repository);
-    }
-  }
-
   Widget _buildScreen(BuildContext context, StoreState state) {
     if (state is StoreStateLoaded) {
-      return _buildStoreScreen(
-        context,
-        state.totalItemsInBasket,
-        state.totalCost,
-        state.products);
-    }
-    else if (state is StoreStatePurchase) {
       return _buildStoreScreen(
         context,
         state.totalItemsInBasket,

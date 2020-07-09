@@ -23,13 +23,13 @@ class MainRouter extends BaseRouter {
         return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository, _routerFactory.createStoresListRouter()));
 
       case BaseRouter.StoresList:
-        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository,  _routerFactory.createStoresListRouter()));
+        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository, _routerFactory.createStoresListRouter()));
 
       case BaseRouter.Store:
         final storeRepository = settings.arguments;
         assert(storeRepository != null && storeRepository is StoreRepository,
                "Store repository is not specified while trying to navigate to store");
-        return CupertinoPageRoute(builder: (_) => StoreScreen(storeRepository));
+        return CupertinoPageRoute(builder: (_) => StoreScreen(storeRepository, _routerFactory.createStoreRouter()));
 
       case BaseRouter.Basket:
         final storeRepository = settings.arguments;
