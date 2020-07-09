@@ -35,7 +35,7 @@ class MainRouter extends BaseRouter {
         final storeRepository = settings.arguments;
         assert(storeRepository != null && storeRepository is StoreRepository,
                "Store repository is not specified while trying to navigate to basket");
-        return CupertinoPageRoute(builder: (_) => BasketScreen(storeRepository));
+        return CupertinoPageRoute(builder: (_) => BasketScreen(storeRepository, _routerFactory.createBasketRouter()));
 
       default:
         return CupertinoPageRoute(builder: (_) {

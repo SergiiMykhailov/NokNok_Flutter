@@ -1,4 +1,6 @@
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+import 'package:nok_nok/ui/routing/build_context_provider.dart';
+import 'package:nok_nok/ui/screens/basket_screen/routing/basket_router.dart';
 
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
@@ -17,29 +19,38 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/widgets.dart';
 
 class BasketScreen extends StatefulWidget {
-// Public methods and properties
+  // Public methods and properties
 
-  BasketScreen(StoreRepository storeRepository, {Key key})
+  BasketScreen(StoreRepository storeRepository,
+               BasketScreenRouter router,
+               {Key key})
       : _storeRepository = storeRepository,
+        _router = router,
         super(key: key);
 
-// Overridden methods
+  // Overridden methods
 
   @override
   _BasketScreenState createState() =>
-    _BasketScreenState(storeRepository: _storeRepository);
+    _BasketScreenState(_storeRepository, _router);
 
-// Internal fields
+  // Internal fields
 
   final StoreRepository _storeRepository;
+  final BasketScreenRouter _router;
 }
 
-class _BasketScreenState extends State<BasketScreen> {
+class _BasketScreenState extends State<BasketScreen>
+                         with BuildContextProvider {
   // Public methods and properties
 
-  _BasketScreenState({Key key, StoreRepository storeRepository})
-      : _basketBloc = BasketBloc(storeRepository),
-        super();
+  _BasketScreenState(StoreRepository storeRepository,
+                     BasketScreenRouter router,
+                     {Key key})
+      : _basketBloc = BasketBloc(storeRepository, router),
+        super() {
+    _basketBloc.buildContextProvider = this;
+  }
 
   // Overridden methods
 
@@ -67,11 +78,15 @@ class _BasketScreenState extends State<BasketScreen> {
           // Listener is the place for logging, showing Snackbars, navigating, etc.
           // It is guaranteed to run only once per state change.
           listener: (BuildContext context, BasketState state) {
-            _handleState(context, state);
           },
         )
       ),
     );
+  }
+
+  @override
+  BuildContext getContext() {
+    return context;
   }
 
   @override
@@ -82,10 +97,6 @@ class _BasketScreenState extends State<BasketScreen> {
   }
 
   // Internal methods
-
-  void _handleState(BuildContext context, BasketState state) {
-
-  }
 
   Widget _buildScreen(BuildContext context, BasketState state) {
     if (state is BasketStateLoaded) {
@@ -124,7 +135,7 @@ class _BasketScreenState extends State<BasketScreen> {
             child: ImageIcon(NokNokImages.back,
               color: NokNokColors.mainThemeColor)),
           onPressed: () {
-            Navigator.pop(context);
+            _basketBloc.navigateBack();
           },
         ),
         Expanded(
@@ -242,4 +253,5 @@ class _BasketScreenState extends State<BasketScreen> {
 
   static const _HeaderHeight = 90.0;
   static const _FooterHeight = 135.0;
+
 }
