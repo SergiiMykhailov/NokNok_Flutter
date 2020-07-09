@@ -28,6 +28,10 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     dispatch(AddItemToBasketEvent(itemIndex));
   }
 
+  void purchase() {
+    dispatch(PurchaseEvent());
+  }
+
   // Overridden methods and properties
 
   @override
@@ -40,6 +44,14 @@ class StoreBloc extends Bloc<StoreEvent, StoreState> {
     }
     else if (event is AddItemToBasketEvent) {
       yield* _handleAddItem(event.itemIndex);
+    }
+    else if (event is PurchaseEvent) {
+      yield StoreStatePurchase(
+        _storeRepository,
+        products: _currentProductsList,
+        totalCost: _storeRepository.getBasket().totalCost,
+        totalItemsInBasket: _storeRepository.getBasket().totalItemsCount
+      );
     }
   }
 

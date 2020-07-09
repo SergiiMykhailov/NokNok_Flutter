@@ -10,5 +10,7 @@ class NokNokImages {
   static get dropDown => AssetImage("lib/resources/images/drop_down.png");
   static get ordersHistory => AssetImage("lib/resources/images/orders_history.png");
   static get deliveryTime => AssetImage("lib/resources/images/delivery_time.png");
+  static get back => AssetImage("lib/resources/images/back.png");
+  static get trashBin => AssetImage("lib/resources/images/trash.png");
 
 }

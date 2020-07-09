@@ -4,6 +4,8 @@ class Basket {
 
   // Public methods and properties
 
+  List<BasketItem> get items => _items;
+
   void insertProduct(StoreProductBase product) {
     final existingItemIndex =
       _items.indexWhere((currentElement) => currentElement._product.id == product.id);
@@ -12,12 +14,12 @@ class Basket {
       _items[existingItemIndex].increment();
     }
     else {
-      final itemToInsert = _BasketItem(product);
+      final itemToInsert = BasketItem(product);
       _items.add(itemToInsert);
     }
   }
 
-  void removeProduct(StoreProductBase product) {
+  void decrementProduct(StoreProductBase product) {
     final existingItemIndex =
       _items.indexWhere((currentElement) => currentElement._product.id == product.id);
 
@@ -28,6 +30,15 @@ class Basket {
       if (existingItem.quantity == 0) {
         _items.removeAt(existingItemIndex);
       }
+    }
+  }
+
+  void removeProduct(StoreProductBase product) {
+    final existingItemIndex =
+      _items.indexWhere((currentElement) => currentElement._product.id == product.id);
+
+    if (existingItemIndex >= 0) {
+      _items.removeAt(existingItemIndex);
     }
   }
 
@@ -54,16 +65,16 @@ class Basket {
 
   // Internal fields
 
-  var _items = List<_BasketItem>();
+  var _items = List<BasketItem>();
 
 }
 
-class _BasketItem {
+class BasketItem {
 
   StoreProductBase get product => _product;
   int get quantity => _quantity;
 
-  _BasketItem(this._product);
+  BasketItem(this._product);
 
   void increment() {
     _quantity++;
