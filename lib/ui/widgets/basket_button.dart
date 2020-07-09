@@ -7,6 +7,7 @@ import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
 
+// ignore: must_be_immutable
 class BasketButton extends StatefulWidget {
 
   // Public methods and properties
@@ -17,6 +18,15 @@ class BasketButton extends StatefulWidget {
   set itemsCount(int updatedValue) {
     if (_state != null) {
       _state.itemsCount = updatedValue;
+    }
+  }
+
+  VoidCallback get onPressed {
+    return _state != null ? _state.onPressed : null;
+  }
+  set onPressed(VoidCallback callback) {
+    if (_state != null) {
+      _state.onPressed = callback;
     }
   }
 
@@ -47,6 +57,8 @@ class _BasketButtonState extends State<BasketButton> {
     });
   }
 
+  VoidCallback onPressed;
+
   // Overridden methods
 
   @override
@@ -66,7 +78,11 @@ class _BasketButtonState extends State<BasketButton> {
               child: ImageIcon(NokNokImages.basket,
                 color: NokNokColors.mainThemeColor),
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (onPressed != null) {
+                onPressed();
+              }
+            },
           ),
         ),
       ),

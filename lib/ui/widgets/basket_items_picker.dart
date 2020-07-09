@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 
+// ignore: must_be_immutable
 class BasketItemsPickerWidget extends StatefulWidget {
 
   // Public methods and properties
