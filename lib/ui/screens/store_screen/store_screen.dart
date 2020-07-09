@@ -146,6 +146,9 @@ class _StoreScreenState extends State<StoreScreen>
   Widget _buildHeader({@required BuildContext context,
                        @required int totalItemsInBasket}) {
     _basketButton.itemsCount = totalItemsInBasket;
+    _basketButton.onPressed = () {
+      _storeBloc.purchase();
+    };
 
     return Column(
       children: [

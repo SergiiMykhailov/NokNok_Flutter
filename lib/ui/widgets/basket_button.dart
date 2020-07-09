@@ -21,6 +21,15 @@ class BasketButton extends StatefulWidget {
     }
   }
 
+  VoidCallback get onPressed {
+    return _state != null ? _state.onPressed : null;
+  }
+  set onPressed(VoidCallback callback) {
+    if (_state != null) {
+      _state.onPressed = callback;
+    }
+  }
+
   // Overridden methods
 
   @override
@@ -48,6 +57,8 @@ class _BasketButtonState extends State<BasketButton> {
     });
   }
 
+  VoidCallback onPressed;
+
   // Overridden methods
 
   @override
@@ -67,7 +78,11 @@ class _BasketButtonState extends State<BasketButton> {
               child: ImageIcon(NokNokImages.basket,
                 color: NokNokColors.mainThemeColor),
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (onPressed != null) {
+                onPressed();
+              }
+            },
           ),
         ),
       ),
