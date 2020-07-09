@@ -7,6 +7,7 @@ import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
 
+// ignore: must_be_immutable
 class BasketButton extends StatefulWidget {
 
   // Public methods and properties

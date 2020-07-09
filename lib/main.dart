@@ -1,10 +1,15 @@
+import 'package:nok_nok/ui/routing/app_router_factory.dart';
 import 'package:nok_nok/ui/routing/base_router.dart';
 import 'package:nok_nok/ui/routing/router_factory.dart';
 
 import 'package:flutter/cupertino.dart';
 
-void main() => runApp(NokNokApp());
+void main() {
+  print('Starting the app...');
+  runApp(NokNokApp());
+}
 
+// ignore: must_be_immutable
 class NokNokApp extends StatelessWidget {
 
   // Overridden methods
@@ -12,17 +17,25 @@ class NokNokApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    if (_routerFactory == null) {
+      _routerFactory = AppRouterFactory();
+      _router = _routerFactory.createMainRouter(_routerFactory);
+    }
+
     return CupertinoApp(
       title: 'Nok Nok',
       theme: CupertinoThemeData(
         primaryColor: CupertinoColors.activeBlue,
       ),
-      onGenerateRoute: _router.generateRoute,
+      onGenerateRoute: (RouteSettings settings) {
+        return _router.generateRoute(settings);
+      }
     );
   }
 
   // Internal fields
 
-  final BaseRouter _router = createRouter();
+  RouterFactory _routerFactory;
+  BaseRouter _router;
 
 }

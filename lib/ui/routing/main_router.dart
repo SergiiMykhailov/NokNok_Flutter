@@ -1,5 +1,6 @@
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/ui/routing/base_router.dart';
+import 'package:nok_nok/ui/routing/router_factory.dart';
 import 'package:nok_nok/ui/screens/basket_screen/basket_screen.dart';
 import 'package:nok_nok/ui/screens/store_screen/store_screen.dart';
 import 'package:nok_nok/ui/screens/stores_list_screen/stores_list_screen.dart';
@@ -11,14 +12,18 @@ import 'package:flutter/cupertino.dart';
 
 class MainRouter extends BaseRouter {
 
+  MainRouter(this._routerFactory);
+
+  // Overridden methods
+
   @override
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case BaseRouter.Root:
-        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository));
+        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository, _routerFactory.createStoresListRouter()));
 
       case BaseRouter.StoresList:
-        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository));
+        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository,  _routerFactory.createStoresListRouter()));
 
       case BaseRouter.Store:
         final storeRepository = settings.arguments;
@@ -42,5 +47,6 @@ class MainRouter extends BaseRouter {
   }
 
   static final RootRepository _rootRepository = createRootRepository();
+  final RouterFactory _routerFactory;
 
 }

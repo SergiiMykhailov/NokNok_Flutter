@@ -1,4 +1,5 @@
-import 'package:nok_nok/ui/routing/base_router.dart';
+import 'package:nok_nok/ui/routing/build_context_provider.dart';
+import 'package:nok_nok/ui/screens/stores_list_screen/routing/stores_list_screen_router.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
 
 import 'bloc/stores_list_state.dart';
@@ -13,24 +14,35 @@ class StoresListScreen extends StatefulWidget {
 
   // Public methods and properties
 
-  StoresListScreen(RootRepository rootRepository, {Key key})
-    : _rootRepository = rootRepository, super(key: key);
+  StoresListScreen(RootRepository rootRepository,
+                   StoresListScreenRouter router,
+                   {Key key})
+    : _rootRepository = rootRepository,
+      _router = router,
+      super(key: key) {
+  }
 
   @override
-  _StoresListScreenState createState() => _StoresListScreenState(_rootRepository);
+  _StoresListScreenState createState() => _StoresListScreenState(_rootRepository, _router);
 
   // Internal fields
 
   final RootRepository _rootRepository;
+  final StoresListScreenRouter _router;
 
 }
 
-class _StoresListScreenState extends State<StoresListScreen> {
+class _StoresListScreenState extends State<StoresListScreen>
+                             with BuildContextProvider {
 
   // Public methods and properties
 
-  _StoresListScreenState(RootRepository rootRepository)
-    : _storesListBloc = StoresListBloc(rootRepository), super();
+  _StoresListScreenState(RootRepository rootRepository,
+                         StoresListScreenRouter router)
+    : _storesListBloc = StoresListBloc(rootRepository, router),
+      super() {
+    _storesListBloc.buildContextProvider = this;
+  }
 
   // Overridden methods
 
@@ -53,7 +65,6 @@ class _StoresListScreenState extends State<StoresListScreen> {
           // Listener is the place for logging, showing Snackbars, navigating, etc.
           // It is guaranteed to run only once per state change.
           listener: (BuildContext context, StoresListState state) {
-            _handleState(context, state);
           },
         )
       ),
@@ -67,33 +78,20 @@ class _StoresListScreenState extends State<StoresListScreen> {
     super.dispose();
   }
 
-  // Internal methods
-
-  void _handleState(BuildContext context, StoresListState state) {
-    if (state is StoresListStateNavigatingToStore) {
-      Navigator.pushNamed(
-        context,
-        BaseRouter.Store,
-        arguments: state.storeRepository);
-    }
+  @override
+  BuildContext getContext() {
+    return context;
   }
+
+  // Internal methods
 
   Widget _buildScreen(BuildContext context, StoresListState state) {
     if (state is StoresListStateLoading) {
       return buildLoadingWidget(context, "Loading stores...");
     }
-    else if (state is StoresListStateNavigatingToStore) {
-      return _buildStoresListScreen();
-    }
     else {
       return buildInvalidStateWidget();
     }
-  }
-
-  Widget _buildStoresListScreen() {
-    return Container(
-      color: CupertinoColors.white,
-    );
   }
 
   // Internal fields
