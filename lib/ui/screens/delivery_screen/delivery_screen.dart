@@ -1,7 +1,11 @@
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/delivery_screen/routing/delivery_screen_router.dart';
+import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
+import 'package:nok_nok/ui/theme/nok_nok_images.dart';
+import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/widgets/total_cost_widget.dart';
 
 import 'bloc/delivery_bloc.dart';
 import 'bloc/delivery_state.dart';
@@ -90,18 +94,18 @@ class _DeliveryScreenState extends State<DeliveryScreen>
 
   Widget _buildScreen(BuildContext context, DeliveryState state) {
     if (state is DeliveryStateLoaded) {
-      return _buildDeliveryScreen(context);
+      return _buildDeliveryScreen(context, state);
     }
     else {
       return buildLoadingWidget(context, "Loading delivery parameters...");
     }
   }
 
-  Widget _buildDeliveryScreen(BuildContext context) {
+  Widget _buildDeliveryScreen(BuildContext context, DeliveryState state) {
     return buildScreenWidget(
       buildContext: context,
-      headerHeight: DefaultHeaderHeight,
-      footerHeight: DefaultFooterHeight,
+      headerHeight: _HeaderHeight,
+      footerHeight: _FooterHeight,
       buildHeaderCallback: (BuildContext context) {
         return _buildHeader(context: context);
       },
@@ -109,24 +113,100 @@ class _DeliveryScreenState extends State<DeliveryScreen>
         return _buildBody(context: context);
       },
       buildFooterCallback: (BuildContext context) {
-        return _buildFooter(context: context);
+        final loadedState = state as DeliveryStateLoaded;
+        return _buildFooter(context: context, state: loadedState);
       });
   }
 
   Widget _buildHeader({@required BuildContext context}) {
-    return Container();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        CupertinoButton(
+          child: Container(
+            width: 15,
+            height: 44,
+            child: ImageIcon(NokNokImages.back,
+              color: NokNokColors.mainThemeColor)),
+          onPressed: () {
+            _deliveryBloc.navigateBack();
+          },
+        ),
+        Expanded(
+          child: Center(
+            child: Container(
+              child: Text(
+                'Delivery',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption.copyWith(
+                  fontSize: NokNokFonts.caption,
+                  fontWeight: FontWeight.bold,
+                  color: NokNokColors.mainThemeColor),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 40),
+      ],
+    );
   }
 
   Widget _buildBody({@required BuildContext context}) {
     return Container();
   }
 
-  Widget _buildFooter({@required BuildContext context}) {
-    return Container();
+  Widget _buildFooter({@required BuildContext context,
+                       @required DeliveryStateLoaded state}) {
+    return Column(
+      children: [
+        SizedBox(height: 10,),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 14,),
+            Text(
+              'Delivery:',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                fontSize: NokNokFonts.caption,
+                color: NokNokColors.mainThemeColor),
+            ),
+            Expanded(child: Container()),
+            Text(
+              'Free',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                fontSize: NokNokFonts.caption,
+                color: NokNokColors.mainThemeColor),
+            ),
+            SizedBox(width: 17,)
+          ],
+        ),
+        SizedBox(height: 25),
+        Row(
+          children: [
+            Expanded(child: Container(),),
+            Container(
+              height: 51,
+              child: TotalCostWidget(
+                state.basket.totalCost,
+                onPurchaseClicked: () {
+                  _deliveryBloc.purchase();
+                },
+              ),
+            ),
+            Expanded(child: Container(),),
+          ],
+        ),
+      ],
+    );
   }
 
   // Internal fields
 
   final DeliveryBloc _deliveryBloc;
+
+  static const _HeaderHeight = 90.0;
+  static const _FooterHeight = 135.0;
 
 }

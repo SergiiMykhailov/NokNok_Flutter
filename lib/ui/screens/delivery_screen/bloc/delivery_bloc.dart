@@ -26,6 +26,20 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     dispatch(ReloadDeliveryEvent());
   }
 
+  void navigateBack() {
+    if (buildContextProvider == null) {
+      print('Build context provider is not set for BasketBloc, Unable to navigate to basket.');
+    }
+    else {
+      final context = buildContextProvider.getContext();
+      _router.navigateBack(context);
+    }
+  }
+
+  void purchase() {
+
+  }
+
   // Overridden methods and properties
 
   @override
@@ -41,7 +55,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   // Internal methods
 
   Stream<DeliveryState> _handleReload() async* {
-
+    yield DeliveryStateLoaded(_storeRepository.getBasket());
   }
 
   // Internal fields
