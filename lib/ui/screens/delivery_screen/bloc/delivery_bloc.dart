@@ -55,7 +55,12 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   // Internal methods
 
   Stream<DeliveryState> _handleReload() async* {
-    yield DeliveryStateLoaded(_storeRepository.getBasket());
+    // TODO: Implement retrieving real user contact info.
+    final userName = 'Иван Иванов';
+    final phoneNumber = '0501234567';
+    final email = 'ivan.ivanov@example.com';
+
+    yield DeliveryStateLoaded(_storeRepository.getBasket(), userName, phoneNumber, email);
   }
 
   // Internal fields

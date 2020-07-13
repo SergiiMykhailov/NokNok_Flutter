@@ -110,7 +110,8 @@ class _DeliveryScreenState extends State<DeliveryScreen>
         return _buildHeader(context: context);
       },
       buildBodyCallback: (BuildContext context) {
-        return _buildBody(context: context);
+        final loadedState = state as DeliveryStateLoaded;
+        return _buildBody(context: context, state: loadedState);
       },
       buildFooterCallback: (BuildContext context) {
         final loadedState = state as DeliveryStateLoaded;
@@ -151,8 +152,16 @@ class _DeliveryScreenState extends State<DeliveryScreen>
     );
   }
 
-  Widget _buildBody({@required BuildContext context}) {
-    return Container();
+  Widget _buildBody({@required BuildContext context,
+                     @required DeliveryStateLoaded state}) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _buildContactInfo(context, state)
+        ],
+      ),
+    );
   }
 
   Widget _buildFooter({@required BuildContext context,
@@ -199,6 +208,106 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           ],
         ),
       ],
+    );
+  }
+
+  Widget _buildContactInfo(BuildContext context, DeliveryStateLoaded state) {
+    return Container(
+      height: 162,
+      padding: EdgeInsets.only(left: 26),
+      child: Column(
+        children: [
+          SizedBox(height: 20,),
+          Row(
+            children: [
+              Text(
+                'Contact Info',
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.caption.copyWith(
+                  fontSize: NokNokFonts.caption,
+                  color: NokNokColors.contactInfo),
+              ),
+            ],
+          ),
+          SizedBox(height: 15,),
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      'Name:',
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: NokNokFonts.caption,
+                        color: NokNokColors.mainThemeColor),
+                    ),
+                  ),
+                  SizedBox(height: 8,),
+                  Container(
+                    child: Text(
+                      'Phone number:',
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: NokNokFonts.caption,
+                        color: NokNokColors.mainThemeColor),
+                    )
+                  ),
+                  SizedBox(height: 8,),
+                  Container(
+                    child: Text(
+                      'Email:',
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: NokNokFonts.caption,
+                        color: NokNokColors.mainThemeColor),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(width: 8,),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Text(
+                      state.userName,
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: NokNokFonts.caption,
+                        fontWeight: FontWeight.bold,
+                        color: NokNokColors.contactInfo),
+                    ),
+                  ),
+                  SizedBox(height: 8,),
+                  Container(
+                    child: Text(
+                      state.phoneNumber,
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: NokNokFonts.caption,
+                        fontWeight: FontWeight.bold,
+                        color: NokNokColors.contactInfo),
+                    ),
+                  ),
+                  SizedBox(height: 8,),
+                  Container(
+                    child: Text(
+                      state.email,
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: NokNokFonts.caption,
+                        fontWeight: FontWeight.bold,
+                        color: NokNokColors.contactInfo),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          )
+        ],
+      ),
     );
   }
 

@@ -11,14 +11,15 @@ class DeliveryStateLoaded extends DeliveryState {
 
   // Public methods and properties
 
-  Basket get basket => _basket;
+  final Basket basket;
+  final String userName;
+  final String phoneNumber;
+  final String email;
 
-  DeliveryStateLoaded(Basket basket)
-    : _basket = basket, super();
-
-
-  // Internal fields
-
-  final Basket _basket;
+  DeliveryStateLoaded(
+    this.basket,
+    this.userName,
+    this.phoneNumber,
+    this.email);
 
 }
