@@ -5,7 +5,8 @@ abstract class BaseRouter {
   static const StoresList = 'storesList';
   static const Store = 'store';
   static const Root = '/';
-  static const Basket = 'basket';
+  static const Basket = 'store/basket';
+  static const Delivery = 'store/delivery';
 
   Route<dynamic> generateRoute(RouteSettings settings);
 

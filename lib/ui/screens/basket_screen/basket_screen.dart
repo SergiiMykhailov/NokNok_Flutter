@@ -225,7 +225,9 @@ class _BasketScreenState extends State<BasketScreen>
               height: 51,
               child: TotalCostWidget(
                 state.basket.totalCost,
-                onPurchaseClicked: () {},
+                onPurchaseClicked: () {
+                  _basketBloc.purchase();
+                },
               ),
             ),
             Expanded(child: Container(),),

@@ -20,6 +20,7 @@ class NokNokColors {
 
   static const Color productTitle = Color(0xFF007AFF);
   static const Color productDescription = Color(0x7F007AFF);
+  static const Color contactInfo = Color(0xFF2C2C2C);
 
   static const Color addToBasket = Color(0xFF79C650);
 }

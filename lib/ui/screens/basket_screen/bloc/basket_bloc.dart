@@ -45,6 +45,16 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     }
   }
 
+  void purchase() {
+    if (buildContextProvider == null) {
+      print('Build context provider is not set for BasketBloc, Unable to navigate to delivery info.');
+    }
+    else {
+      final context = buildContextProvider.getContext();
+      _router.navigateToDeliverySettings(context, storeRepository);
+    }
+  }
+
   // Overridden methods and properties
 
   @override

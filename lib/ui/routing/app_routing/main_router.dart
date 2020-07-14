@@ -2,6 +2,7 @@ import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/ui/routing/base_router.dart';
 import 'package:nok_nok/ui/routing/router_factory.dart';
 import 'package:nok_nok/ui/screens/basket_screen/basket_screen.dart';
+import 'package:nok_nok/ui/screens/delivery_screen/delivery_screen.dart';
 import 'package:nok_nok/ui/screens/store_screen/store_screen.dart';
 import 'package:nok_nok/ui/screens/stores_list_screen/stores_list_screen.dart';
 
@@ -36,6 +37,12 @@ class MainRouter extends BaseRouter {
         assert(storeRepository != null && storeRepository is StoreRepository,
                "Store repository is not specified while trying to navigate to basket");
         return CupertinoPageRoute(builder: (_) => BasketScreen(storeRepository, _routerFactory.createBasketRouter()));
+
+      case BaseRouter.Delivery:
+        final storeRepository = settings.arguments;
+        assert(storeRepository != null && storeRepository is StoreRepository,
+        "Store repository is not specified while trying to navigate to basket");
+        return CupertinoPageRoute(builder: (_) => DeliveryScreen(storeRepository, _routerFactory.createDeliveryRouter()));
 
       default:
         return CupertinoPageRoute(builder: (_) {

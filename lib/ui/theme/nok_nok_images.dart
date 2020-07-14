@@ -12,5 +12,8 @@ class NokNokImages {
   static get deliveryTime => AssetImage("lib/resources/images/delivery_time.png");
   static get back => AssetImage("lib/resources/images/back.png");
   static get trashBin => AssetImage("lib/resources/images/trash.png");
+  static get map => AssetImage("lib/resources/images/map.png");
+  static get home => AssetImage("lib/resources/images/home.png");
+  static get apartment => AssetImage("lib/resources/images/apartment.png");
 
 }
