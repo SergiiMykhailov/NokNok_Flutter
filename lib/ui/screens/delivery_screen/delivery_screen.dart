@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/delivery_screen/routing/delivery_screen_router.dart';
@@ -102,21 +103,30 @@ class _DeliveryScreenState extends State<DeliveryScreen>
   }
 
   Widget _buildDeliveryScreen(BuildContext context, DeliveryState state) {
-    return buildScreenWidget(
-      buildContext: context,
-      headerHeight: _HeaderHeight,
-      footerHeight: _FooterHeight,
-      buildHeaderCallback: (BuildContext context) {
-        return _buildHeader(context: context);
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
       },
-      buildBodyCallback: (BuildContext context) {
-        final loadedState = state as DeliveryStateLoaded;
-        return _buildBody(context: context, state: loadedState);
-      },
-      buildFooterCallback: (BuildContext context) {
-        final loadedState = state as DeliveryStateLoaded;
-        return _buildFooter(context: context, state: loadedState);
-      });
+      child: buildScreenWidget(
+        buildContext: context,
+        headerHeight: _HeaderHeight,
+        footerHeight: _FooterHeight,
+        buildHeaderCallback: (BuildContext context) {
+          return _buildHeader(context: context);
+        },
+        buildBodyCallback: (BuildContext context) {
+          final loadedState = state as DeliveryStateLoaded;
+          return _buildBody(context: context, state: loadedState);
+        },
+        buildFooterCallback: (BuildContext context) {
+          final loadedState = state as DeliveryStateLoaded;
+          return _buildFooter(context: context, state: loadedState);
+        })
+    );
   }
 
   Widget _buildHeader({@required BuildContext context}) {
@@ -158,7 +168,8 @@ class _DeliveryScreenState extends State<DeliveryScreen>
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildContactInfo(context, state)
+          _buildContactInfo(context, state),
+          _buildAddress(context, state),
         ],
       ),
     );
@@ -311,11 +322,119 @@ class _DeliveryScreenState extends State<DeliveryScreen>
     );
   }
 
+  Widget _buildAddress(BuildContext context, DeliveryStateLoaded state) {
+    return Container(
+      padding: EdgeInsets.only(left: 6, right: 6),
+      child: Container(
+        height: 208,
+        padding: EdgeInsets.only(left: 19, right: 19),
+        decoration: BoxDecoration(
+          color: CupertinoColors.white,
+          borderRadius: BorderRadius.all(Radius.circular(CornerRadiusLarge)),
+          border: Border.all(
+            color: NokNokColors.mainThemeColor.withAlpha(31),
+            width: 1.0
+          )
+        ),
+        child: Column(
+          children: [
+            SizedBox(height: 15,),
+            Row(
+              children: [
+                Text(
+                  'Delivery address',
+                  textAlign: TextAlign.left,
+                  style: Theme.of(context).textTheme.caption.copyWith(
+                    fontSize: NokNokFonts.caption,
+                    color: NokNokColors.contactInfo),
+                )
+              ],
+            ),
+            SizedBox(height: 23,),
+            Container(
+              height: _AddressItemHeight,
+              padding: EdgeInsets.only(left: _AddressItemLeftInset),
+              decoration: BoxDecoration(
+                color: NokNokColors.searchBarBackground,
+                borderRadius: BorderRadius.all(Radius.circular(CornerRadiusLarge)),
+                border: Border.all(
+                  color: NokNokColors.searchBarBorder,
+                  width: 1.0
+                )
+              ),
+              child: Row(
+                children: [
+                  ImageIcon(NokNokImages.map,
+                    color: NokNokColors.mainThemeColor,
+                  ),
+                  Expanded(
+                    child: CupertinoButton(
+                      child: Text(
+                        'Мирная, 19',
+                        textAlign: TextAlign.left,
+                        style: Theme.of(context).textTheme.caption.copyWith(
+                            fontSize: NokNokFonts.searchBar,
+                            color: NokNokColors.mainThemeColor),
+                      ),
+                      onPressed: () {
+
+                      },
+                    ),
+                  ),
+                  SizedBox(width: 8)
+                ],
+              ),
+            ),
+            SizedBox(height: 23,),
+            Container(
+              height: _AddressItemHeight,
+              padding: EdgeInsets.only(left: _AddressItemLeftInset),
+              decoration: BoxDecoration(
+                color: NokNokColors.searchBarBackground,
+                borderRadius: BorderRadius.all(Radius.circular(CornerRadiusLarge)),
+                border: Border.all(
+                  color: NokNokColors.searchBarBorder,
+                  width: 1.0
+                )
+              ),
+              child: Row(
+                children: [
+                  ImageIcon(NokNokImages.apartment,
+                    color: NokNokColors.mainThemeColor,
+                  ),
+                  Expanded(
+                    child: CupertinoTextField(
+                      placeholder: 'Apartment',
+                      placeholderStyle: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: NokNokFonts.searchBar,
+                        color: NokNokColors.mainThemeColor.withAlpha(127)),
+                      style: Theme.of(context).textTheme.caption.copyWith(
+                        fontSize: NokNokFonts.searchBar,
+                        color: NokNokColors.mainThemeColor),
+                      textAlign: TextAlign.center,
+                      decoration: null,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+                    ),
+                  ),
+                  SizedBox(width: 8)
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   // Internal fields
 
   final DeliveryBloc _deliveryBloc;
 
   static const _HeaderHeight = 90.0;
   static const _FooterHeight = 135.0;
+
+  static const _AddressItemLeftInset = 19.0;
+  static const _AddressItemHeight = 50.0;
 
 }
