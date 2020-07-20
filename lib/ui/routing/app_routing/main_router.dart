@@ -3,6 +3,7 @@ import 'package:nok_nok/ui/routing/base_router.dart';
 import 'package:nok_nok/ui/routing/router_factory.dart';
 import 'package:nok_nok/ui/screens/basket_screen/basket_screen.dart';
 import 'package:nok_nok/ui/screens/delivery_screen/delivery_screen.dart';
+import 'package:nok_nok/ui/screens/sign_in_screen/sign_in_screen.dart';
 import 'package:nok_nok/ui/screens/store_screen/store_screen.dart';
 import 'package:nok_nok/ui/screens/stores_list_screen/stores_list_screen.dart';
 
@@ -21,7 +22,7 @@ class MainRouter extends BaseRouter {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case BaseRouter.Root:
-        return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository, _routerFactory.createStoresListRouter()));
+        return CupertinoPageRoute(builder: (_) => SignInScreen(_routerFactory.createSignInRouter()));
 
       case BaseRouter.StoresList:
         return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository, _routerFactory.createStoresListRouter()));

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/sign_in_screen/routing/sign_in_screen_router.dart';
 
 import 'sign_in_event.dart';
@@ -9,6 +10,8 @@ import 'package:bloc/bloc.dart';
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   // Public methods and properties
+
+  BuildContextProvider buildContextProvider;
 
   SignInBloc(this._router)
     : super() {

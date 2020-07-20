@@ -5,6 +5,10 @@ class SignInStateLoading extends SignInState {
 
 }
 
+class SignInStateLoaded extends SignInState {
+
+}
+
 class SignInStateSignedIn extends SignInState {
 
   // Public methods and properties
