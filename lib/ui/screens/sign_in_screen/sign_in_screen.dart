@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/sign_in_screen/routing/sign_in_screen_router.dart';
@@ -7,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/widgets/action_button.dart';
+import 'package:nok_nok/ui/widgets/text_field.dart';
 
 import 'bloc/sign_in_bloc.dart';
 import 'bloc/sign_in_state.dart';
@@ -78,6 +81,8 @@ class _SignInScreenState extends State<SignInScreen>
   @override
   void dispose() {
     _signInBloc.dispose();
+    _nameFocusNode.dispose();
+    _phoneNumberFocusNode.dispose();
 
     super.dispose();
   }
@@ -88,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen>
     if (state is SignInStateLoading) {
       return buildLoadingWidget(context, "Signing in...");
     }
-    else if (state is SignInStateLoaded) {
+    else if (state is SignInStateEmpty) {
       return _buildSignInScreen(context);
     }
     else {
@@ -97,65 +102,158 @@ class _SignInScreenState extends State<SignInScreen>
   }
 
   Widget _buildSignInScreen(BuildContext context) {
-    return buildScreenWidget(
-      buildContext: context,
-      headerHeight: DefaultHeaderHeight,
-      footerHeight: DefaultFooterHeight,
-      buildHeaderCallback: (BuildContext context) {
-        return _buildHeader(context: context);
+    return GestureDetector(
+      onTap: () {
+        FocusScopeNode currentFocus = FocusScope.of(context);
+
+        if (!currentFocus.hasPrimaryFocus) {
+          currentFocus.unfocus();
+        }
       },
-      buildBodyCallback: (BuildContext context) {
-        return _buildBody(context: context);
-      },
-      buildFooterCallback: (BuildContext context) {
-        return _buildFooter(context: context);
-      });
+      child: buildScreenWidget(
+        buildContext: context,
+        headerHeight: _HeaderHeight,
+        footerHeight: _FooterHeight,
+        buildHeaderCallback: (BuildContext context) {
+          return _buildHeader(context: context);
+        },
+        buildBodyCallback: (BuildContext context) {
+          return _buildBody(context: context);
+        },
+        buildFooterCallback: (BuildContext context) {
+          return _buildFooter(context: context);
+        }
+      )
+    );
   }
 
   Widget _buildHeader({@required BuildContext context}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Expanded(
+        Container(
+          height: _HeaderHeight - 5,
           child: Center(
             child: Container(
               child: Text(
                 'Sign In',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
-                fontSize: NokNokFonts.caption,
-                fontWeight: FontWeight.bold,
-                color: NokNokColors.mainThemeColor),
+                  fontSize: NokNokFonts.caption,
+                  fontWeight: FontWeight.bold,
+                  color: NokNokColors.mainThemeColor),
               ),
             ),
           ),
-        ),
+        )
       ],
     );
   }
 
   Widget _buildBody({@required BuildContext context}) {
     return Container(
-      child: Row(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          SizedBox(width: DefaultBodyHorizontalInset),
-          Expanded(
-            child: Container(
-
-            )
+          SizedBox(height: _Spacing),
+          Row(
+            children: [
+              SizedBox(width: DefaultBodyHorizontalInset),
+              Expanded(
+                child: _buildInputWidgets(context),
+              ),
+              SizedBox(width: DefaultBodyHorizontalInset),
+            ],
           ),
-          SizedBox(width: DefaultBodyHorizontalInset)
+        ],
+      )
+    );
+  }
+
+  Widget _buildInputWidgets(BuildContext context) {
+    return Container(
+      height: 180,
+      decoration: BoxDecoration(
+        color: CupertinoColors.white,
+        borderRadius: BorderRadius.all(Radius.circular(CornerRadiusLarge)),
+        border: Border.all(
+          color: NokNokColors.mainThemeColor.withAlpha(31),
+          width: 1.0)
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: _Spacing,),
+          Row(
+            children: [
+              SizedBox(width: _Spacing),
+              Expanded(
+                child: NokNokTextField(
+                  supportsTextInput: true,
+                  placeholderOrTitle: 'Name',
+                  image: null,
+                  formatters: [WhitelistingTextInputFormatter.digitsOnly],
+                  focusNode: _nameFocusNode,
+                ),
+              ),
+              SizedBox(width: _Spacing)
+            ],
+          ),
+          SizedBox(height: _Spacing,),
+          Row(
+            children: [
+              SizedBox(width: _Spacing),
+              Expanded(
+                child: NokNokTextField(
+                  supportsTextInput: true,
+                  placeholderOrTitle: 'Phone number',
+                  image: null,
+                  formatters: [WhitelistingTextInputFormatter.digitsOnly],
+                  focusNode: _phoneNumberFocusNode,
+                  keyboardType: TextInputType.phone,
+                )
+              ),
+              SizedBox(width: _Spacing),
+            ],
+          ),
         ],
       ),
     );
   }
 
   Widget _buildFooter({@required BuildContext context}) {
-    return Container();
+    return Column(
+      children: [
+        SizedBox(height: _Spacing / 2),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: ButtonHeight,
+              child: ActionButton(
+                title: 'Register',
+                onPressed: () {
+
+                },
+              ),
+            )
+          ],
+        )
+      ],
+    );
   }
 
   // Internal fields
 
   final SignInBloc _signInBloc;
+
+  final _nameFocusNode = FocusNode();
+  final _phoneNumberFocusNode = FocusNode();
+
+  static const _Spacing = 24.0;
+  static const _HeaderHeight = 90.0;
+  static const _FooterHeight = 90.0;
 
 }

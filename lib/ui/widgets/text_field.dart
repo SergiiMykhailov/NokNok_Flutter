@@ -14,12 +14,16 @@ class NokNokTextField extends StatelessWidget {
                    @required String placeholderOrTitle,
                    @required ImageProvider image,
                    VoidCallback onPressed,
-                   List<TextInputFormatter> formatters})
+                   List<TextInputFormatter> formatters,
+                   FocusNode focusNode,
+                   TextInputType keyboardType = TextInputType.text})
     : _supportsTextInput = supportsTextInput,
       _placeholderOrTitle = placeholderOrTitle,
       _image = image,
       _onPressed = onPressed,
-      _formatters = formatters;
+      _formatters = formatters,
+      _focusNode = focusNode,
+      _keyboardType = keyboardType;
 
   String get text {
     if (_supportsTextInput) {
@@ -84,9 +88,10 @@ class NokNokTextField extends StatelessWidget {
           color: NokNokColors.mainThemeColor),
         textAlign: TextAlign.center,
         decoration: null,
-        keyboardType: TextInputType.number,
+        keyboardType: _keyboardType,
         inputFormatters: _formatters,
         controller: _textFieldController,
+        focusNode: _focusNode,
       );
     }
     else {
@@ -114,6 +119,8 @@ class NokNokTextField extends StatelessWidget {
   final ImageProvider _image;
   final List<TextInputFormatter> _formatters;
   final VoidCallback _onPressed;
+  final FocusNode _focusNode;
+  final TextInputType _keyboardType;
 
   CupertinoTextField _textField;
   TextEditingController _textFieldController;
