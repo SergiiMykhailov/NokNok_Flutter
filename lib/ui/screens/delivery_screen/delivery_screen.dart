@@ -6,6 +6,7 @@ import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/widgets/text_field.dart';
 import 'package:nok_nok/ui/widgets/total_cost_widget.dart';
 
 import 'bloc/delivery_bloc.dart';
@@ -351,75 +352,20 @@ class _DeliveryScreenState extends State<DeliveryScreen>
               ],
             ),
             SizedBox(height: 23,),
-            Container(
-              height: _AddressItemHeight,
-              padding: EdgeInsets.only(left: _AddressItemLeftInset),
-              decoration: BoxDecoration(
-                color: NokNokColors.searchBarBackground,
-                borderRadius: BorderRadius.all(Radius.circular(CornerRadiusLarge)),
-                border: Border.all(
-                  color: NokNokColors.searchBarBorder,
-                  width: 1.0
-                )
-              ),
-              child: Row(
-                children: [
-                  ImageIcon(NokNokImages.map,
-                    color: NokNokColors.mainThemeColor,
-                  ),
-                  Expanded(
-                    child: CupertinoButton(
-                      child: Text(
-                        'Мирная, 19',
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).textTheme.caption.copyWith(
-                            fontSize: NokNokFonts.searchBar,
-                            color: NokNokColors.mainThemeColor),
-                      ),
-                      onPressed: () {
+            NokNokTextField(
+              supportsTextInput: false,
+              placeholderOrTitle: 'Мирная, 19',
+              image: NokNokImages.map,
+              onPressed: () {
 
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 8)
-                ],
-              ),
+              },
             ),
             SizedBox(height: 23,),
-            Container(
-              height: _AddressItemHeight,
-              padding: EdgeInsets.only(left: _AddressItemLeftInset),
-              decoration: BoxDecoration(
-                color: NokNokColors.searchBarBackground,
-                borderRadius: BorderRadius.all(Radius.circular(CornerRadiusLarge)),
-                border: Border.all(
-                  color: NokNokColors.searchBarBorder,
-                  width: 1.0
-                )
-              ),
-              child: Row(
-                children: [
-                  ImageIcon(NokNokImages.apartment,
-                    color: NokNokColors.mainThemeColor,
-                  ),
-                  Expanded(
-                    child: CupertinoTextField(
-                      placeholder: 'Apartment',
-                      placeholderStyle: Theme.of(context).textTheme.caption.copyWith(
-                        fontSize: NokNokFonts.searchBar,
-                        color: NokNokColors.mainThemeColor.withAlpha(127)),
-                      style: Theme.of(context).textTheme.caption.copyWith(
-                        fontSize: NokNokFonts.searchBar,
-                        color: NokNokColors.mainThemeColor),
-                      textAlign: TextAlign.center,
-                      decoration: null,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                    ),
-                  ),
-                  SizedBox(width: 8)
-                ],
-              ),
+            NokNokTextField(
+              supportsTextInput: true,
+              placeholderOrTitle: 'Apartment',
+              image: NokNokImages.apartment,
+              formatters: [WhitelistingTextInputFormatter.digitsOnly],
             )
           ],
         ),
@@ -433,8 +379,5 @@ class _DeliveryScreenState extends State<DeliveryScreen>
 
   static const _HeaderHeight = 90.0;
   static const _FooterHeight = 135.0;
-
-  static const _AddressItemLeftInset = 19.0;
-  static const _AddressItemHeight = 50.0;
 
 }
