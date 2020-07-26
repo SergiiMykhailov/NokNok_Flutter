@@ -4,6 +4,7 @@ import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/widgets/action_button.dart';
 import 'package:nok_nok/ui/widgets/basket_button.dart';
 import 'package:nok_nok/ui/widgets/button_with_icon_and_subtitle.dart';
 import 'package:nok_nok/ui/widgets/products_list/compact_products_list_widget.dart';
@@ -323,12 +324,26 @@ class _StoreScreenState extends State<StoreScreen>
       duration: Duration(milliseconds: DefaultAnimationDuration),
       curve: Curves.fastOutSlowIn,
       height: purchaseWidgetHeight,
-      child: TotalCostWidget(
-        totalCost,
-        onPurchaseClicked: () {
-          _storeBloc.purchase();
-        },
-      ),
+      child: Container(
+        decoration: BoxDecoration(
+          color: CupertinoColors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(CornerRadiusLarge),
+            topRight: Radius.circular(CornerRadiusLarge)
+          ),
+        ),
+        child: Center(
+          child: Container(
+            height: ButtonHeight,
+            child: TotalCostWidget(
+              totalCost,
+              onPurchaseClicked: () {
+                _storeBloc.purchase();
+              },
+            ),
+          ),
+        ),
+      )
     );
   }
 
