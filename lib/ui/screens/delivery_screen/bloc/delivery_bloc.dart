@@ -1,3 +1,4 @@
+import 'package:nok_nok/data_access/secure_storage/secure_storage.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/delivery_screen/routing/delivery_screen_router.dart';
 
@@ -55,9 +56,10 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   // Internal methods
 
   Stream<DeliveryState> _handleReload() async* {
-    // TODO: Implement retrieving real user contact info.
-    final userName = 'Иван Иванов';
-    final phoneNumber = '0501234567';
+    final userName = SecureStorage().userName;
+    final phoneNumber = SecureStorage().phoneNumber;
+
+    // TODO: Implement retrieving real user email.
     final email = 'ivan.ivanov@example.com';
 
     yield DeliveryStateLoaded(_storeRepository.getBasket(), userName, phoneNumber, email);
