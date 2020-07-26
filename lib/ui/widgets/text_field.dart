@@ -86,7 +86,7 @@ class NokNokTextField extends StatelessWidget {
         style: Theme.of(context).textTheme.caption.copyWith(
           fontSize: NokNokFonts.searchBar,
           color: NokNokColors.mainThemeColor),
-        textAlign: TextAlign.center,
+        textAlign: TextAlign.left,
         decoration: null,
         keyboardType: _keyboardType,
         inputFormatters: _formatters,
