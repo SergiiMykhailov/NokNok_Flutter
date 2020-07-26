@@ -54,6 +54,7 @@ class NokNokTextField extends StatelessWidget {
           ImageIcon(_image,
             color: NokNokColors.mainThemeColor,
           ),
+          SizedBox(width: 15,),
           Expanded(
             child: this._textWidget,
           ),
@@ -86,6 +87,7 @@ class NokNokTextField extends StatelessWidget {
         style: Theme.of(context).textTheme.caption.copyWith(
           fontSize: NokNokFonts.searchBar,
           color: NokNokColors.mainThemeColor),
+        padding: EdgeInsets.only(left: 0.0),
         textAlign: TextAlign.left,
         decoration: null,
         keyboardType: _keyboardType,
@@ -96,12 +98,19 @@ class NokNokTextField extends StatelessWidget {
     }
     else {
       _button = CupertinoButton(
-        child: Text(
-          _placeholderOrTitle,
-          textAlign: TextAlign.left,
-          style: Theme.of(context).textTheme.caption.copyWith(
-            fontSize: NokNokFonts.searchBar,
-            color: NokNokColors.mainThemeColor),
+        padding: EdgeInsets.only(left: 0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              _placeholderOrTitle,
+              textAlign: TextAlign.left,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                fontSize: NokNokFonts.searchBar,
+                color: NokNokColors.mainThemeColor),
+            ),
+            Expanded(child: Container(),)
+          ],
         ),
         onPressed: () {
           if (_onPressed != null) {
