@@ -1,3 +1,4 @@
+import 'package:nok_nok/data_access/repositories/base/root_repository.dart';
 import 'package:nok_nok/ui/routing/app_routing/app_basket_screen_router.dart';
 import 'package:nok_nok/ui/routing/app_routing/app_delivery_screen_router.dart';
 import 'package:nok_nok/ui/routing/app_routing/app_store_screen_router.dart';
@@ -43,8 +44,8 @@ class AppRouterFactory extends RouterFactory {
   }
 
   @override
-  SignInScreenRouter createSignInRouter() {
-    return AppSignInScreenRouter();
+  SignInScreenRouter createSignInRouter(RootRepository rootRepository) {
+    return AppSignInScreenRouter(rootRepository);
   }
 
 }

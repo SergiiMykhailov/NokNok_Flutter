@@ -22,7 +22,7 @@ class MainRouter extends BaseRouter {
   Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case BaseRouter.Root:
-        return CupertinoPageRoute(builder: (_) => SignInScreen(_routerFactory.createSignInRouter()));
+        return CupertinoPageRoute(builder: (_) => SignInScreen(_routerFactory.createSignInRouter(_rootRepository)));
 
       case BaseRouter.StoresList:
         return CupertinoPageRoute(builder: (_) => StoresListScreen(_rootRepository, _routerFactory.createStoresListRouter()));

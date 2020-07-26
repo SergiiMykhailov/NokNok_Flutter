@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
-import 'package:nok_nok/ui/utils/screen_utils.dart';
 
 const ButtonHeight = 50.0;
 const ButtonCornerRadius = ButtonHeight / 2;

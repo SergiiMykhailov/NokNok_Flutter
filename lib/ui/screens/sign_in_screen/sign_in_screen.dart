@@ -243,7 +243,9 @@ class _SignInScreenState extends State<SignInScreen>
               child: ActionButton(
                 title: 'Register',
                 onPressed: () {
-
+                  _signInBloc.signIn(
+                    phoneNumber: _phoneNumberTextField.text,
+                    userName: _nameTextField.text);
                 },
               ),
             )

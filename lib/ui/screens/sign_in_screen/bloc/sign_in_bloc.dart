@@ -24,6 +24,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState>
 
   void signIn({@required String phoneNumber,
                @required String userName}) {
+    dispatch(PerformSignInEvent(phoneNumber, userName));
   }
 
   // Overridden methods and properties
@@ -68,12 +69,20 @@ class SignInBloc extends Bloc<SignInEvent, SignInState>
   }
 
   void _navigateToStore() {
-    final context = buildContextProvider.getContext();
-    _router.navigateToStore(context);
+    if (buildContextProvider == null) {
+      print('Build context provider is not set for SignInBloc, Unable to navigate to store.');
+    }
+    else {
+      final context = buildContextProvider.getContext();
+      _router.navigateToStore(context);
+    }
   }
 
   Stream<SignInState> _handleSignIn(String phoneNumber, String userName) async* {
+    SecureStorage().userName = userName;
+    SecureStorage().phoneNumber = phoneNumber;
 
+    _navigateToStore();
   }
 
   // Internal fields
