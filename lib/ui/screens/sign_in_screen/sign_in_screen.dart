@@ -54,6 +54,27 @@ class _SignInScreenState extends State<SignInScreen>
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    _nameTextField = NokNokTextField(
+      supportsTextInput: true,
+      placeholderOrTitle: 'Name',
+      image: null,
+      focusNode: _nameFocusNode,
+    );
+
+    _phoneNumberTextField = NokNokTextField(
+      supportsTextInput: true,
+      placeholderOrTitle: 'Phone number',
+      image: null,
+      formatters: [WhitelistingTextInputFormatter.digitsOnly],
+      focusNode: _phoneNumberFocusNode,
+      keyboardType: TextInputType.phone,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       color: CupertinoColors.white,
@@ -190,13 +211,7 @@ class _SignInScreenState extends State<SignInScreen>
             children: [
               SizedBox(width: _Spacing),
               Expanded(
-                child: NokNokTextField(
-                  supportsTextInput: true,
-                  placeholderOrTitle: 'Name',
-                  image: null,
-                  formatters: [WhitelistingTextInputFormatter.digitsOnly],
-                  focusNode: _nameFocusNode,
-                ),
+                child: _nameTextField
               ),
               SizedBox(width: _Spacing)
             ],
@@ -206,14 +221,7 @@ class _SignInScreenState extends State<SignInScreen>
             children: [
               SizedBox(width: _Spacing),
               Expanded(
-                child: NokNokTextField(
-                  supportsTextInput: true,
-                  placeholderOrTitle: 'Phone number',
-                  image: null,
-                  formatters: [WhitelistingTextInputFormatter.digitsOnly],
-                  focusNode: _phoneNumberFocusNode,
-                  keyboardType: TextInputType.phone,
-                )
+                child: _phoneNumberTextField
               ),
               SizedBox(width: _Spacing),
             ],
@@ -251,6 +259,8 @@ class _SignInScreenState extends State<SignInScreen>
 
   final _nameFocusNode = FocusNode();
   final _phoneNumberFocusNode = FocusNode();
+  NokNokTextField _nameTextField;
+  NokNokTextField _phoneNumberTextField;
 
   static const _Spacing = 24.0;
   static const _HeaderHeight = 90.0;
