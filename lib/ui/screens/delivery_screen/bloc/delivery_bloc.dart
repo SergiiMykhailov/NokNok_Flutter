@@ -38,7 +38,13 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   }
 
   void purchase() {
-
+    if (buildContextProvider == null) {
+      print('Build context provider is not set for BasketBloc, Unable to navigate to time slot selection.');
+    }
+    else {
+      final context = buildContextProvider.getContext();
+      _router.navigateToTimeSlotSelection(context, _storeRepository);
+    }
   }
 
   // Overridden methods and properties
