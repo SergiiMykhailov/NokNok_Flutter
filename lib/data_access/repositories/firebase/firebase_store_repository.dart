@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/models/basket.dart';
 import 'package:nok_nok/models/store_category_item.dart';
+import 'package:nok_nok/models/store_delivery_time_slot.dart';
 import 'package:nok_nok/models/store_product_base.dart';
 
 import 'package:built_collection/built_collection.dart';
@@ -62,6 +63,29 @@ class FirebaseStoreRepository extends StoreRepository {
     return _basket;
   }
 
+  @override
+  Future<BuiltList<DeliveryTimeSlot>> getDeliveryTimeSlots(String address) async {
+    var result = <DeliveryTimeSlot>[];
+
+    final deliveryTimeNode = _storeNode.child(_DeliveryTimeNodeName);
+    if (deliveryTimeNode != null) {
+      final allDeliveryTimeSlotsSnapshot = await deliveryTimeNode.once();
+      final List<dynamic> allDeliveryTimeNodes = allDeliveryTimeSlotsSnapshot.value;
+
+      for (var deliveryTimeNode in allDeliveryTimeNodes) {
+        final Map<dynamic, dynamic> nodeMap = deliveryTimeNode;
+        final parsedTimeSlot = DeliveryTimeSlot.fromJSON(nodeMap);
+
+        if (parsedTimeSlot != null &&
+            parsedTimeSlot.address == address) {
+          result.add(parsedTimeSlot);
+        }
+      }
+    }
+
+    return BuiltList<DeliveryTimeSlot>.from(result);
+  }
+
   // Internal methods
 
   // Internal fields
@@ -72,5 +96,6 @@ class FirebaseStoreRepository extends StoreRepository {
   final _storage = FirebaseStorage.instance.ref();
 
   static const _ProductsNodeName = 'products';
+  static const _DeliveryTimeNodeName = 'deliverySlots';
 
 }

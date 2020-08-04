@@ -12,9 +12,12 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
   // Public methods and properties
 
   BuildContextProvider buildContextProvider;
+  final String address;
   StoreRepository get storeRepository => _storeRepository;
 
-  DeliveryTimeBloc(this._storeRepository,
+  DeliveryTimeBloc(
+    this._storeRepository,
+    this.address,
     this._router)
     : super() {
     assert(_router != null);
@@ -55,7 +58,9 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
   // Internal methods
 
   Stream<DeliveryTimeState> _handleReload() async* {
-    yield DeliveryTimeStateLoaded(_storeRepository.getBasket());
+    final timeSlots = await storeRepository.getDeliveryTimeSlots(address);
+
+    yield DeliveryTimeStateLoaded(_storeRepository.getBasket(), timeSlots);
   }
 
   // Internal fields

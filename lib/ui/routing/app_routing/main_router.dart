@@ -47,10 +47,18 @@ class MainRouter extends BaseRouter {
         return CupertinoPageRoute(builder: (_) => DeliveryScreen(storeRepository, _routerFactory.createDeliveryRouter()));
 
       case BaseRouter.DeliveryTime:
-        final storeRepository = settings.arguments;
-        assert(storeRepository != null && storeRepository is StoreRepository,
+        assert(settings.arguments is List<dynamic>);
+        final List<dynamic> arguments = settings.arguments;
+        assert(arguments.length == 2);
+
+        final address = arguments[0];
+        final storeRepository = arguments[1];
+        assert(address != null &&
+               address is String &&
+               storeRepository != null &&
+               storeRepository is StoreRepository,
                "Store repository is not specified while trying to navigate to delivery time");
-        return CupertinoPageRoute(builder: (_) => DeliveryTimeScreen(storeRepository, _routerFactory.createDeliveryTimeRouter()));
+        return CupertinoPageRoute(builder: (_) => DeliveryTimeScreen(storeRepository, address, _routerFactory.createDeliveryTimeRouter()));
 
       default:
         return CupertinoPageRoute(builder: (_) {

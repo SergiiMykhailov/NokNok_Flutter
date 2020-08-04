@@ -17,22 +17,26 @@ class DeliveryTimeScreen extends StatefulWidget {
 
   // Public methods and properties
 
-  DeliveryTimeScreen(StoreRepository storeRepository,
+  DeliveryTimeScreen(
+    StoreRepository storeRepository,
+    String address,
     DeliveryTimeScreenRouter router,
     {Key key})
     : _storeRepository = storeRepository,
+      _address = address,
       _router = router,
       super(key: key);
 
   // Overridden methods
 
   @override
-  _DeliveryTimeScreenState createState() => _DeliveryTimeScreenState(_storeRepository, _router);
+  _DeliveryTimeScreenState createState() => _DeliveryTimeScreenState(_storeRepository, _address, _router);
 
   // Internal fields
 
   final StoreRepository _storeRepository;
   final DeliveryTimeScreenRouter _router;
+  final String _address;
 
 }
 
@@ -41,10 +45,12 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
 
   // Public methods and properties
 
-  _DeliveryTimeScreenState(StoreRepository storeRepository,
+  _DeliveryTimeScreenState(
+    StoreRepository storeRepository,
+    String address,
     DeliveryTimeScreenRouter router,
     {Key key})
-    : _deliveryTimeBloc = DeliveryTimeBloc(storeRepository, router),
+    : _deliveryTimeBloc = DeliveryTimeBloc(storeRepository, address, router),
       super() {
     _deliveryTimeBloc.buildContextProvider = this;
   }

@@ -43,7 +43,7 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     }
     else {
       final context = buildContextProvider.getContext();
-      _router.navigateToTimeSlotSelection(context, _storeRepository);
+      _router.navigateToTimeSlotSelection(context, _selectedAddress, _storeRepository);
     }
   }
 
@@ -68,12 +68,13 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     // TODO: Implement retrieving real user email.
     final email = 'ivan.ivanov@example.com';
 
-    yield DeliveryStateLoaded(_storeRepository.getBasket(), userName, phoneNumber, email);
+    yield DeliveryStateLoaded(_storeRepository.getBasket(), _selectedAddress, userName, phoneNumber, email);
   }
 
   // Internal fields
 
   StoreRepository _storeRepository;
   DeliveryScreenRouter _router;
+  final String _selectedAddress = 'Мирная, 19';
 
 }

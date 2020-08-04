@@ -14,11 +14,11 @@ class AppDeliveryScreenRouter extends DeliveryScreenRouter {
   }
 
   @override
-  void navigateToTimeSlotSelection(BuildContext context, StoreRepository storeRepository) {
+  void navigateToTimeSlotSelection(BuildContext context, String address, StoreRepository storeRepository) {
     Navigator.pushNamed(
       context,
       BaseRouter.DeliveryTime,
-      arguments: storeRepository);
+      arguments: [address, storeRepository]);
   }
 
 }
