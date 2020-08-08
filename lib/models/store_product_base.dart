@@ -32,11 +32,17 @@ class StoreProductBase {
         description != null &&
         imageUrl != null &&
         price != null) {
+      var priceToAssign = price;
+
+      if (price is int) {
+        priceToAssign = price.toDouble();
+      }
+
       return StoreProductBase(
         id: id,
         title: title,
-        description: description,
-        price: price,
+        description: description.toString(),
+        price: priceToAssign,
         imageUrl: imageUrl
       );
     }

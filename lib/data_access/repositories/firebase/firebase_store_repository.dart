@@ -43,7 +43,13 @@ class FirebaseStoreRepository extends StoreRepository {
 
         if (parsedProduct != null) {
           final imageSnapshot =  _storage.child(_ProductsNodeName).child(parsedProduct.imageUrl);
-          final resolvedImageUrl = await imageSnapshot.getDownloadURL();
+          var resolvedImageUrl = '';
+
+          try {
+            resolvedImageUrl = await imageSnapshot.getDownloadURL();
+          }
+          catch (exception) { }
+
           final productWithResolvedImageUrl = StoreProductBase(id: parsedProduct.id,
             title: parsedProduct.title,
             description: parsedProduct.description,
