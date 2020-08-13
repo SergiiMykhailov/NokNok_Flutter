@@ -1,7 +1,9 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+import 'package:nok_nok/models/store_delivery_time_slot.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/delivery_time_screen/routing/delivery_time_router.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
@@ -106,30 +108,21 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
   }
 
   Widget _buildDeliveryTimeScreen(BuildContext context, DeliveryTimeState state) {
-    return GestureDetector(
-      onTap: () {
-        FocusScopeNode currentFocus = FocusScope.of(context);
-
-        if (!currentFocus.hasPrimaryFocus) {
-          currentFocus.unfocus();
-        }
+    return buildScreenWidget(
+      buildContext: context,
+      headerHeight: _HeaderHeight,
+      footerHeight: _FooterHeight,
+      buildHeaderCallback: (BuildContext context) {
+        return _buildHeader(context: context);
       },
-      child: buildScreenWidget(
-        buildContext: context,
-        headerHeight: _HeaderHeight,
-        footerHeight: _FooterHeight,
-        buildHeaderCallback: (BuildContext context) {
-          return _buildHeader(context: context);
-        },
-        buildBodyCallback: (BuildContext context) {
-          final loadedState = state as DeliveryTimeStateLoaded;
-          return _buildBody(context: context, state: loadedState);
-        },
-        buildFooterCallback: (BuildContext context) {
-          final loadedState = state as DeliveryTimeStateLoaded;
-          return _buildFooter(context: context, state: loadedState);
-        })
-    );
+      buildBodyCallback: (BuildContext context) {
+        final loadedState = state as DeliveryTimeStateLoaded;
+        return _buildBody(context: context, state: loadedState);
+      },
+      buildFooterCallback: (BuildContext context) {
+        final loadedState = state as DeliveryTimeStateLoaded;
+        return _buildFooter(context: context, state: loadedState);
+      });
   }
 
   Widget _buildHeader({@required BuildContext context}) {
@@ -165,9 +158,106 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
     );
   }
 
-  Widget _buildBody({@required BuildContext context,
+  Widget _buildBody(
+    {@required BuildContext context,
     @required DeliveryTimeStateLoaded state}) {
+    return ListView.builder(
+      itemCount: state.timeSlotRows.length,
+      itemBuilder: (BuildContext context, int index) {
+        final timeSlotRow = state.timeSlotRows[index];
+        return _buildTimeSlotRow(context, timeSlotRow);
+      }
+    );
+  }
+
+  Widget _buildTimeSlotRow(BuildContext context, DeliveryTimeSlotRowInfo rowInfo) {
+    if (rowInfo.title != null) {
+      return _buildTimeSlotHeader(rowInfo.title);
+    }
+    else if (rowInfo.timeSlots != null) {
+      return _buildTimeSlotsRow(context, rowInfo.timeSlots);
+    }
+
     return Container();
+  }
+
+  Widget _buildTimeSlotHeader(String title) {
+    if (title == null) {
+      return Container(height: _SectionHeaderHeight);
+    }
+
+    return Container(
+      height: _SectionHeaderHeight,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: 16),
+          Container(
+            height: 22,
+            child: Center(
+              child: Text(
+                title.toUpperCase(),
+                style: Theme.of(context).textTheme.caption.copyWith(
+                  fontSize: NokNokFonts.caption,
+                  color: NokNokColors.mainThemeColor,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimeSlotsRow(BuildContext context, BuiltList<DeliveryTimeSlot> rowTimeSlots) {
+    var children = List<Widget>();
+    final rowWidth = MediaQuery.of(context).size.width;
+    final timeSlotWidgetWidth = rowWidth / DeliveryTimeBloc.NumberOfItemsPerRow - 3 * _TimeSlotsSpacing;
+
+    children.add(SizedBox(width: _TimeSlotsSpacing));
+
+    for (final timeSlot in rowTimeSlots) {
+      children.add(SizedBox(width: _TimeSlotsSpacing));
+      children.add(_buildTimeSlotWidget(timeSlot, timeSlotWidgetWidth));
+      children.add(SizedBox(width: _TimeSlotsSpacing));
+    }
+
+    children.add(SizedBox(width: _TimeSlotsSpacing));
+
+    return Container(
+      height: _TimeSlotsSectionHeight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: children,
+      ),
+    );
+  }
+
+  Widget _buildTimeSlotWidget(DeliveryTimeSlot timeSlot, double width) {
+    final timeSlotText = '${timeSlot.timeSlotStart} - ${timeSlot.timeSlotEnd}';
+
+    return Container(
+      height: _TimeSlotsSectionHeight - 2 * _TimeSlotsSpacing,
+      width: width,
+      decoration: BoxDecoration(
+        color: CupertinoColors.white,
+        borderRadius: BorderRadius.all(Radius.circular(CornerRadiusLarge)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            timeSlotText,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.caption.copyWith(
+              fontSize: NokNokFonts.productPrice,
+              color: NokNokColors.mainThemeColor),
+          )
+        ],
+      ),
+    );
   }
 
   Widget _buildFooter({@required BuildContext context,
@@ -201,5 +291,9 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
 
   static const _HeaderHeight = 90.0;
   static const _FooterHeight = 135.0;
+
+  static const _SectionHeaderHeight = 48.0;
+  static const _TimeSlotsSectionHeight = 100.0;
+  static const _TimeSlotsSpacing = 2.0;
 
 }

@@ -1,5 +1,8 @@
+import 'package:built_collection/built_collection.dart';
+import 'package:nok_nok/models/store_delivery_time_slot.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/delivery_time_screen/routing/delivery_time_router.dart';
+import 'package:nok_nok/ui/utils/utils.dart';
 
 import 'delivery_time_event.dart';
 import 'delivery_time_state.dart';
@@ -10,6 +13,8 @@ import 'package:bloc/bloc.dart';
 class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
 
   // Public methods and properties
+
+  static const int NumberOfItemsPerRow = 2;
 
   BuildContextProvider buildContextProvider;
   final String address;
@@ -43,6 +48,55 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
 
   }
 
+  static Map<int, List<DeliveryTimeSlot>> buildDayOfWeekToTimeSlotsMap(BuiltList<DeliveryTimeSlot> timeSlots) {
+    var dayOfWeekToTimeSlotsMap = Map<int, List<DeliveryTimeSlot>>();
+
+    for (DeliveryTimeSlot timeSlot in timeSlots) {
+      if (dayOfWeekToTimeSlotsMap[timeSlot.dayOfWeek] == null) {
+        // We've picked the 1st entry for current day of week
+        dayOfWeekToTimeSlotsMap[timeSlot.dayOfWeek] = [timeSlot];
+      }
+      else {
+        dayOfWeekToTimeSlotsMap[timeSlot.dayOfWeek].add(timeSlot);
+      }
+    }
+
+    return dayOfWeekToTimeSlotsMap;
+  }
+
+  static BuiltList<DeliveryTimeSlotRowInfo> buildRowsFromTimeSlotsMap(Map<int, List<DeliveryTimeSlot>> dayOfWeekToTimeSlotsMap) {
+    var result = List<DeliveryTimeSlotRowInfo>();
+
+    for (int dayOfWeek = DayOfWeekMondayIndex;
+         dayOfWeek <= DayOfWeekSundayIndex;
+         ++dayOfWeek) {
+      final currentDayTimeSlots = dayOfWeekToTimeSlotsMap[dayOfWeek];
+
+      if (currentDayTimeSlots != null && currentDayTimeSlots.isNotEmpty) {
+        final dayTitle = titleForDayOfWeek(dayOfWeek);
+        result.add(DeliveryTimeSlotRowInfo(null, dayTitle));
+
+        for (int timeSlotRowIndex = 0;
+             timeSlotRowIndex < currentDayTimeSlots.length;
+             timeSlotRowIndex += NumberOfItemsPerRow) {
+          final lastTimeSlotIndexInCurrentRow = timeSlotRowIndex + NumberOfItemsPerRow;
+          var rowTimeSlots = List<DeliveryTimeSlot>();
+
+          for (int timeSlotIndex = timeSlotRowIndex;
+          timeSlotIndex < lastTimeSlotIndexInCurrentRow && timeSlotIndex < currentDayTimeSlots.length;
+          ++timeSlotIndex) {
+            final timeSlotToInsert = currentDayTimeSlots[timeSlotIndex];
+            rowTimeSlots.add(timeSlotToInsert);
+          }
+
+          result.add(DeliveryTimeSlotRowInfo(BuiltList<DeliveryTimeSlot>.from(rowTimeSlots), null));
+        }
+      }
+    }
+
+    return BuiltList<DeliveryTimeSlotRowInfo>.from(result);
+  }
+
   // Overridden methods and properties
 
   @override
@@ -58,9 +112,11 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
   // Internal methods
 
   Stream<DeliveryTimeState> _handleReload() async* {
-    final timeSlots = await storeRepository.getDeliveryTimeSlots(address);
+    final loadedTimeSlots = await storeRepository.getDeliveryTimeSlots(address);
+    final dayOfWeekToTimeSlotsMap = buildDayOfWeekToTimeSlotsMap(loadedTimeSlots);
+    final timeSlotsRows = buildRowsFromTimeSlotsMap(dayOfWeekToTimeSlotsMap);
 
-    yield DeliveryTimeStateLoaded(_storeRepository.getBasket(), timeSlots);
+    yield DeliveryTimeStateLoaded(_storeRepository.getBasket(), timeSlotsRows);
   }
 
   // Internal fields
