@@ -10,6 +10,7 @@ import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
+import 'package:nok_nok/ui/utils/utils.dart';
 import 'package:nok_nok/ui/widgets/total_cost_widget.dart';
 
 import 'bloc/delivery_time_bloc.dart';
@@ -264,17 +265,19 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
     @required DeliveryTimeStateLoaded state}) {
     return Column(
       children: [
-        SizedBox(height: 10,),
+        SizedBox(height: 47,),
         Row(
           children: [
             Expanded(child: Container(),),
             Container(
               height: 51,
-              child: TotalCostWidget(
-                state.basket.totalCost,
-                onPurchaseClicked: () {
-                  _deliveryTimeBloc.purchase();
-                },
+              child: Text(
+                'Total cost: ' + formatPrice(state.basket.totalCost),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.caption.copyWith(
+                    fontSize: NokNokFonts.caption,
+                    fontWeight: FontWeight.bold,
+                    color: NokNokColors.mainThemeColor),
               ),
             ),
             Expanded(child: Container(),),
