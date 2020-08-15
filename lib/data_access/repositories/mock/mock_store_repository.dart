@@ -130,6 +130,15 @@ class MockStoreRepository implements StoreRepository {
                                                        () => result);
   }
 
+  @override
+  Future<String> postOrder(DeliveryTimeSlot timeSlot,
+                           String address,
+                           String userName,
+                           String userPhoneNumber) {
+    return Future<String>.delayed(Duration(seconds: 1),
+        () => '1234567890');
+  }
+
   // Internal methods
 
   MockStoreRepository._setup() {

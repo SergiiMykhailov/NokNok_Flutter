@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:nok_nok/data_access/publishers/base/order_publisher.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/models/basket.dart';
 import 'package:nok_nok/models/store_category_item.dart';
@@ -14,10 +15,13 @@ class FirebaseStoreRepository extends StoreRepository {
   // Public methods and properties
 
   FirebaseStoreRepository({
-    @required DatabaseReference storeNode
+    @required DatabaseReference storeNode,
+    @required OrderPublisher orderPublisher
   }) :
-    _storeNode = storeNode {
+    _storeNode = storeNode,
+    _orderPublisher = orderPublisher {
     assert(_storeNode != null);
+    assert(_orderPublisher != null);
   }
 
   // Overridden methods
@@ -92,13 +96,25 @@ class FirebaseStoreRepository extends StoreRepository {
     return BuiltList<DeliveryTimeSlot>.from(result);
   }
 
-  // Internal methods
+  @override
+  Future<String> postOrder(DeliveryTimeSlot timeSlot,
+                           String address,
+                           String userName,
+                           String userPhoneNumber) async {
+    final orderId = await _orderPublisher.publishOrder(timeSlot,
+                                                       _basket,
+                                                       address,
+                                                       userName,
+                                                       userPhoneNumber);
+    return orderId;
+  }
 
   // Internal fields
 
   final _basket = Basket();
 
   final DatabaseReference _storeNode;
+  final OrderPublisher _orderPublisher;
   final _storage = FirebaseStorage.instance.ref();
 
   static const _ProductsNodeName = 'products';

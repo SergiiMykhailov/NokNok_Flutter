@@ -11,8 +11,7 @@ class AppDeliveryTimeScreenRouter extends DeliveryTimeScreenRouter {
   }
 
   @override
-  void navigateToOrderConfirmation(BuildContext context) {
-    // TODO: implement navigateToOrderConfirmation
+  void navigateToOrderConfirmation(BuildContext context, String orderId) {
   }
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:nok_nok/ui/utils/utils.dart';
 
 class StoreProductBase {
 
@@ -48,6 +49,13 @@ class StoreProductBase {
     }
 
     return null;
+  }
+
+  String toString() {
+    final priceText = formatPrice(price);
+    final result = '$title, ($description), $priceText';
+
+    return result;
   }
 
   // Internal fields

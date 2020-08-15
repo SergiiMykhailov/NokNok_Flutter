@@ -1,3 +1,4 @@
+import 'package:nok_nok/data_access/publishers/trello/trello_order_publisher.dart';
 import 'package:nok_nok/data_access/repositories/base/root_repository.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/data_access/repositories/firebase/firebase_store_repository.dart';
@@ -12,7 +13,9 @@ class FirebaseRootRepository extends RootRepository {
   @override
   Future<BuiltList<StoreRepository>> fetchAllStores() async {
     final storeNode = database.child('stores').child('default');
-    final allStores = [FirebaseStoreRepository(storeNode: storeNode)];
+    final ordersPublisher = TrelloOrderPublisher();
+    final allStores = [FirebaseStoreRepository(storeNode: storeNode,
+                                               orderPublisher: ordersPublisher)];
     final result = BuiltList<StoreRepository>.from(allStores);
 
     return Future<BuiltList<StoreRepository>>.delayed(Duration(seconds: 2),

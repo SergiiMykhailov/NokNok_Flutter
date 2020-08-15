@@ -1,4 +1,5 @@
 import 'package:built_collection/built_collection.dart';
+import 'package:nok_nok/data_access/secure_storage/secure_storage.dart';
 import 'package:nok_nok/models/store_delivery_time_slot.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/delivery_time_screen/routing/delivery_time_router.dart';
@@ -45,7 +46,7 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
   }
 
   void purchase(DeliveryTimeSlot timeSlot) {
-
+    dispatch(PostOrderDeliveryTimeEvent(timeSlot));
   }
 
   static Map<int, List<DeliveryTimeSlot>> buildDayOfWeekToTimeSlotsMap(BuiltList<DeliveryTimeSlot> timeSlots) {
@@ -107,9 +108,28 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
     if (event is ReloadDeliveryTimeEvent) {
       yield* _handleReload();
     }
+    else if (event is PostOrderDeliveryTimeEvent) {
+      _handlePostOrder(event.timeSlot);
+    }
   }
 
   // Internal methods
+
+  void _handlePostOrder(DeliveryTimeSlot timeSlot) {
+    final userName = SecureStorage().userName;
+    final phoneNumber = SecureStorage().phoneNumber;
+
+    _storeRepository.postOrder(timeSlot, address, userName, phoneNumber)
+      .then((String orderId) {
+      if (buildContextProvider == null) {
+        print('Build context provider is not set for DeliveryTimeBloc, Unable to navigate to order confirmation.');
+      }
+      else {
+        final context = buildContextProvider.getContext();
+        _router.navigateToOrderConfirmation(context, orderId);
+      }
+    });
+  }
 
   Stream<DeliveryTimeState> _handleReload() async* {
     final loadedTimeSlots = await storeRepository.getDeliveryTimeSlots(address);

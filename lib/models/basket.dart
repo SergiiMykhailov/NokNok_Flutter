@@ -86,6 +86,11 @@ class BasketItem {
     }
   }
 
+  String toString() {
+    final result = '${product.toString()} => $quantity';
+    return result;
+  }
+
   StoreProductBase _product;
   int _quantity = 1;
 
