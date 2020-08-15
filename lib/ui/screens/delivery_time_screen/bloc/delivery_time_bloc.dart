@@ -44,7 +44,7 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
     }
   }
 
-  void purchase() {
+  void purchase(DeliveryTimeSlot timeSlot) {
 
   }
 

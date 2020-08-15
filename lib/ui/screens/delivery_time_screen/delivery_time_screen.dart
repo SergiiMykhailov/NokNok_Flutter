@@ -11,7 +11,6 @@ import 'package:nok_nok/ui/theme/nok_nok_images.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
 import 'package:nok_nok/ui/utils/screen_utils.dart';
 import 'package:nok_nok/ui/utils/utils.dart';
-import 'package:nok_nok/ui/widgets/total_cost_widget.dart';
 
 import 'bloc/delivery_time_bloc.dart';
 import 'bloc/delivery_time_state.dart';
@@ -220,7 +219,11 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
 
     for (final timeSlot in rowTimeSlots) {
       children.add(SizedBox(width: _TimeSlotsSpacing));
-      children.add(_buildTimeSlotWidget(timeSlot, timeSlotWidgetWidth));
+      children.add(_buildTimeSlotWidget(timeSlot,
+                                        timeSlotWidgetWidth,
+                                        onPressed: () {
+        _deliveryTimeBloc.purchase(timeSlot);
+      }));
       children.add(SizedBox(width: _TimeSlotsSpacing));
     }
 
@@ -235,7 +238,9 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
     );
   }
 
-  Widget _buildTimeSlotWidget(DeliveryTimeSlot timeSlot, double width) {
+  Widget _buildTimeSlotWidget(DeliveryTimeSlot timeSlot,
+                              double width,
+                              {@required VoidCallback onPressed}) {
     final timeSlotText = '${timeSlot.timeSlotStart} - ${timeSlot.timeSlotEnd}';
 
     return Container(
@@ -245,18 +250,25 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
         color: CupertinoColors.white,
         borderRadius: BorderRadius.all(Radius.circular(CornerRadiusLarge)),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            timeSlotText,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.caption.copyWith(
-              fontSize: NokNokFonts.productPrice,
-              color: NokNokColors.mainThemeColor),
-          )
-        ],
+      child: CupertinoButton(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              timeSlotText,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.caption.copyWith(
+                fontSize: NokNokFonts.productPrice,
+                color: NokNokColors.mainThemeColor),
+            )
+          ],
+        ),
+        onPressed: () {
+          if (onPressed != null) {
+            onPressed();
+          }
+        },
       ),
     );
   }
