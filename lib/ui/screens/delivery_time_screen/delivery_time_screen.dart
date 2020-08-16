@@ -102,6 +102,9 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
     if (state is DeliveryTimeStateLoaded) {
       return _buildDeliveryTimeScreen(context, state);
     }
+    else if (state is DeliveryTimeStatePublishingOrder) {
+      return _buildPublishingScreen(context);
+    }
     else {
       return buildLoadingWidget(context, "Loading available delivery slots...");
     }
@@ -122,6 +125,22 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
       buildFooterCallback: (BuildContext context) {
         final loadedState = state as DeliveryTimeStateLoaded;
         return _buildFooter(context: context, state: loadedState);
+      });
+  }
+
+  Widget _buildPublishingScreen(BuildContext context) {
+    return buildScreenWidget(
+      buildContext: context,
+      headerHeight: _HeaderHeight,
+      footerHeight: _FooterHeight,
+      buildHeaderCallback: (BuildContext context) {
+        return _buildHeader(context: context);
+      },
+      buildBodyCallback: (BuildContext context) {
+        return buildLoadingWidget(context, 'Publishing order...');
+      },
+      buildFooterCallback: (BuildContext context) {
+        return Container();
       });
   }
 

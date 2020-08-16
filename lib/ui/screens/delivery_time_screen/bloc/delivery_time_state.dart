@@ -32,3 +32,7 @@ class DeliveryTimeStateLoaded extends DeliveryTimeState {
     this.timeSlotRows);
 
 }
+
+class DeliveryTimeStatePublishingOrder extends DeliveryTimeState {
+
+}

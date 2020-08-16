@@ -109,13 +109,13 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
       yield* _handleReload();
     }
     else if (event is PostOrderDeliveryTimeEvent) {
-      _handlePostOrder(event.timeSlot);
+      yield* _handlePostOrder(event.timeSlot);
     }
   }
 
   // Internal methods
 
-  void _handlePostOrder(DeliveryTimeSlot timeSlot) {
+  Stream<DeliveryTimeState> _handlePostOrder(DeliveryTimeSlot timeSlot) async* {
     final userName = SecureStorage().userName;
     final phoneNumber = SecureStorage().phoneNumber;
 
@@ -129,6 +129,8 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
         _router.navigateToOrderConfirmation(context, orderId);
       }
     });
+
+    yield DeliveryTimeStatePublishingOrder();
   }
 
   Stream<DeliveryTimeState> _handleReload() async* {
