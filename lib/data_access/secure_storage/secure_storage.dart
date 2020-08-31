@@ -46,6 +46,16 @@ class SecureStorage {
     _storage.write(key: _KeyPhoneNumber, value: newValue);
   }
 
+  String get address {
+    final result = _cache[_KeyAddress];
+    return result;
+  }
+
+  set address(String newValue) {
+    _cache[_KeyAddress] = newValue;
+    _storage.write(key: _KeyAddress, value: newValue);
+  }
+
   // Internal methods
 
   SecureStorage._internal() {
@@ -73,9 +83,8 @@ class SecureStorage {
   var _isLoaded = false;
   var _observers = List<SecureStorageObserver>();
 
-  // ignore: non_constant_identifier_names
-  static final _KeyUserName = "UserName";
-  // ignore: non_constant_identifier_names
-  static final _KeyPhoneNumber = "PhoneNumber";
+  static const _KeyUserName = 'UserName';
+  static const _KeyPhoneNumber = 'PhoneNumber';
+  static const _KeyAddress = 'UserAddress';
 
 }

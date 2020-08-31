@@ -52,63 +52,60 @@ Widget buildScreenWidget({@required BuildContext buildContext,
                           @required BuildScreenSectionCallback buildHeaderCallback,
                           @required BuildScreenSectionCallback buildBodyCallback,
                           @required BuildScreenSectionCallback buildFooterCallback}) {
-  assert(buildHeaderCallback != null);
-  assert(buildBodyCallback != null);
-  assert(buildFooterCallback != null);
+  var screenElements = List<Widget>();
+
+  if (buildHeaderCallback != null) {
+    screenElements.add(ClipRRect(
+      borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(CornerRadiusLarge),
+        bottomRight: Radius.circular(CornerRadiusLarge)
+      ),
+      child: Container(
+        color: CupertinoColors.white,
+        height: headerHeight,
+        child: Column(
+          children: [
+            SizedBox(height: HeaderFirstRowOffset),
+            Container(
+              child: buildHeaderCallback(buildContext),
+            )
+          ],
+        )
+      )
+    ));
+  }
+
+  if (buildBodyCallback != null) {
+    screenElements.add(Expanded(
+      child: buildBodyCallback(buildContext)
+    ));
+  }
+
+  if (buildFooterCallback != null) {
+    screenElements.add(ClipRRect(
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(CornerRadiusLarge),
+        topRight: Radius.circular(CornerRadiusLarge)
+      ),
+      child: Container(
+        color: CupertinoColors.white,
+        height: footerHeight,
+        child: Column(
+          children: [
+            SizedBox(height: FooterFirstRowOffset),
+            Container(
+              child: buildFooterCallback(buildContext),
+            )
+          ],
+        )
+      )
+    ));
+  }
 
   return Container(
     color: NokNokColors.backgroundColor,
     child: Column (
-      children: [
-
-        // Header with content
-
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(CornerRadiusLarge),
-            bottomRight: Radius.circular(CornerRadiusLarge)
-          ),
-          child: Container(
-            color: CupertinoColors.white,
-            height: headerHeight,
-            child: Column(
-              children: [
-                SizedBox(height: HeaderFirstRowOffset),
-                Container(
-                  child: buildHeaderCallback(buildContext),
-                )
-              ],
-            )
-          )
-        ),
-
-        // Body
-
-        Expanded(
-          child: buildBodyCallback(buildContext)
-        ),
-
-        // Footer
-
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(CornerRadiusLarge),
-            topRight: Radius.circular(CornerRadiusLarge)
-          ),
-          child: Container(
-            color: CupertinoColors.white,
-            height: footerHeight,
-            child: Column(
-              children: [
-                SizedBox(height: FooterFirstRowOffset),
-                Container(
-                  child: buildFooterCallback(buildContext),
-                )
-              ],
-            )
-          )
-        ),
-      ],
+      children: screenElements
     )
   );
 }

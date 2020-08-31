@@ -3,6 +3,7 @@ import 'package:nok_nok/models/store_category_item.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 
 import 'package:built_collection/built_collection.dart';
+import 'package:nok_nok/models/store_delivery_time_slot.dart';
 import 'package:nok_nok/models/store_product_base.dart';
 
 class MockStoreRepository implements StoreRepository {
@@ -114,6 +115,28 @@ class MockStoreRepository implements StoreRepository {
   @override
   Basket getBasket() {
     return _basket;
+  }
+
+  @override
+  Future<BuiltList<DeliveryTimeSlot>> getDeliveryTimeSlots(String address) {
+    final result = BuiltList<DeliveryTimeSlot>([
+      DeliveryTimeSlot(dayOfWeek: 6,
+                       address: address,
+                       timeSlotStart: "11:00",
+                       timeSlotEnd: "11:30")
+    ]);
+
+    return Future<BuiltList<DeliveryTimeSlot>>.delayed(Duration(seconds: 1),
+                                                       () => result);
+  }
+
+  @override
+  Future<String> postOrder(DeliveryTimeSlot timeSlot,
+                           String address,
+                           String userName,
+                           String userPhoneNumber) {
+    return Future<String>.delayed(Duration(seconds: 1),
+        () => '1234567890');
   }
 
   // Internal methods

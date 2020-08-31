@@ -38,7 +38,13 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
   }
 
   void purchase() {
-
+    if (buildContextProvider == null) {
+      print('Build context provider is not set for BasketBloc, Unable to navigate to time slot selection.');
+    }
+    else {
+      final context = buildContextProvider.getContext();
+      _router.navigateToTimeSlotSelection(context, _selectedAddress, _storeRepository);
+    }
   }
 
   // Overridden methods and properties
@@ -62,12 +68,13 @@ class DeliveryBloc extends Bloc<DeliveryEvent, DeliveryState> {
     // TODO: Implement retrieving real user email.
     final email = 'ivan.ivanov@example.com';
 
-    yield DeliveryStateLoaded(_storeRepository.getBasket(), userName, phoneNumber, email);
+    yield DeliveryStateLoaded(_storeRepository.getBasket(), _selectedAddress, userName, phoneNumber, email);
   }
 
   // Internal fields
 
   StoreRepository _storeRepository;
   DeliveryScreenRouter _router;
+  final String _selectedAddress = 'Мирная, 19';
 
 }

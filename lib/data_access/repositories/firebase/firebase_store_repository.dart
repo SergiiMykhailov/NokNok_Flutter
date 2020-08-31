@@ -1,9 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:nok_nok/data_access/publishers/base/order_publisher.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/models/basket.dart';
 import 'package:nok_nok/models/store_category_item.dart';
+import 'package:nok_nok/models/store_delivery_time_slot.dart';
 import 'package:nok_nok/models/store_product_base.dart';
 
 import 'package:built_collection/built_collection.dart';
@@ -13,10 +15,13 @@ class FirebaseStoreRepository extends StoreRepository {
   // Public methods and properties
 
   FirebaseStoreRepository({
-    @required DatabaseReference storeNode
+    @required DatabaseReference storeNode,
+    @required OrderPublisher orderPublisher
   }) :
-    _storeNode = storeNode {
+    _storeNode = storeNode,
+    _orderPublisher = orderPublisher {
     assert(_storeNode != null);
+    assert(_orderPublisher != null);
   }
 
   // Overridden methods
@@ -42,7 +47,13 @@ class FirebaseStoreRepository extends StoreRepository {
 
         if (parsedProduct != null) {
           final imageSnapshot =  _storage.child(_ProductsNodeName).child(parsedProduct.imageUrl);
-          final resolvedImageUrl = await imageSnapshot.getDownloadURL();
+          var resolvedImageUrl = '';
+
+          try {
+            resolvedImageUrl = await imageSnapshot.getDownloadURL();
+          }
+          catch (exception) { }
+
           final productWithResolvedImageUrl = StoreProductBase(id: parsedProduct.id,
             title: parsedProduct.title,
             description: parsedProduct.description,
@@ -62,15 +73,51 @@ class FirebaseStoreRepository extends StoreRepository {
     return _basket;
   }
 
-  // Internal methods
+  @override
+  Future<BuiltList<DeliveryTimeSlot>> getDeliveryTimeSlots(String address) async {
+    var result = <DeliveryTimeSlot>[];
+
+    final deliveryTimeNode = _storeNode.child(_DeliveryTimeNodeName);
+    if (deliveryTimeNode != null) {
+      final allDeliveryTimeSlotsSnapshot = await deliveryTimeNode.once();
+      final List<dynamic> allDeliveryTimeNodes = allDeliveryTimeSlotsSnapshot.value;
+
+      for (var deliveryTimeNode in allDeliveryTimeNodes) {
+        final Map<dynamic, dynamic> nodeMap = deliveryTimeNode;
+        final parsedTimeSlot = DeliveryTimeSlot.fromJSON(nodeMap);
+
+        if (parsedTimeSlot != null &&
+            parsedTimeSlot.address == address) {
+          result.add(parsedTimeSlot);
+        }
+      }
+    }
+
+    return BuiltList<DeliveryTimeSlot>.from(result);
+  }
+
+  @override
+  Future<String> postOrder(DeliveryTimeSlot timeSlot,
+                           String address,
+                           String userName,
+                           String userPhoneNumber) async {
+    final orderId = await _orderPublisher.publishOrder(timeSlot,
+                                                       _basket,
+                                                       address,
+                                                       userName,
+                                                       userPhoneNumber);
+    return orderId;
+  }
 
   // Internal fields
 
   final _basket = Basket();
 
   final DatabaseReference _storeNode;
+  final OrderPublisher _orderPublisher;
   final _storage = FirebaseStorage.instance.ref();
 
   static const _ProductsNodeName = 'products';
+  static const _DeliveryTimeNodeName = 'deliverySlots';
 
 }

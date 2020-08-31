@@ -1,5 +1,8 @@
 import 'package:flutter/widgets.dart';
+import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/ui/screens/delivery_screen/routing/delivery_screen_router.dart';
+
+import '../base_router.dart';
 
 class AppDeliveryScreenRouter extends DeliveryScreenRouter {
 
@@ -11,8 +14,11 @@ class AppDeliveryScreenRouter extends DeliveryScreenRouter {
   }
 
   @override
-  void navigateToPayment(BuildContext context) {
-    // TODO: implement navigateToPayment
+  void navigateToTimeSlotSelection(BuildContext context, String address, StoreRepository storeRepository) {
+    Navigator.pushNamed(
+      context,
+      BaseRouter.DeliveryTime,
+      arguments: [address, storeRepository]);
   }
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:nok_nok/ui/utils/utils.dart';
 
 class StoreProductBase {
 
@@ -32,16 +33,29 @@ class StoreProductBase {
         description != null &&
         imageUrl != null &&
         price != null) {
+      var priceToAssign = price;
+
+      if (price is int) {
+        priceToAssign = price.toDouble();
+      }
+
       return StoreProductBase(
         id: id,
         title: title,
-        description: description,
-        price: price,
+        description: description.toString(),
+        price: priceToAssign,
         imageUrl: imageUrl
       );
     }
 
     return null;
+  }
+
+  String toString() {
+    final priceText = formatPrice(price);
+    final result = '$title, ($description), $priceText';
+
+    return result;
   }
 
   // Internal fields

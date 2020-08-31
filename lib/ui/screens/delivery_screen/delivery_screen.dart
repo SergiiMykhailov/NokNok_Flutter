@@ -354,7 +354,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             SizedBox(height: 23,),
             NokNokTextField(
               supportsTextInput: false,
-              placeholderOrTitle: 'Мирная, 19',
+              placeholderOrTitle: state.address,
               image: NokNokImages.map,
               onPressed: () {
 
