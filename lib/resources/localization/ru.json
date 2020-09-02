@@ -9,5 +9,9 @@
   "Orders history": "История заказов",
   "Delivery time": "Время доставки",
   "Loading products list...": "Загрузка списка продуктов...",
-  "Purchase": "Оплатить"
+  "Purchase": "Оплатить",
+  "Loading basket items...": "Загрузка корзины...",
+  "Basket": "Корзина",
+  "Delivery:": "Доставка:",
+  "Free": "Бесплатно"
 }

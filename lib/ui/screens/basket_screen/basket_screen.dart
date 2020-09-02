@@ -1,4 +1,5 @@
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+import 'package:nok_nok/ui/localization/nok_nok_localization.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/basket_screen/routing/basket_router.dart';
 
@@ -102,7 +103,7 @@ class _BasketScreenState extends State<BasketScreen>
     if (state is BasketStateLoaded) {
       return _buildBasketScreen(context, state);
     } else {
-      return buildLoadingWidget(context, "Loading basket items...");
+      return buildLoadingWidget(context, translate(context, "Loading basket items..."));
     }
   }
 
@@ -142,7 +143,7 @@ class _BasketScreenState extends State<BasketScreen>
           child: Center(
             child: Container(
               child: Text(
-                'Basket',
+                translate(context, "Basket"),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
                   fontSize: NokNokFonts.caption,
@@ -200,7 +201,7 @@ class _BasketScreenState extends State<BasketScreen>
           children: [
             SizedBox(width: 14,),
             Text(
-              'Delivery:',
+              translate(context, "Delivery:"),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.copyWith(
                 fontSize: NokNokFonts.caption,
@@ -208,7 +209,7 @@ class _BasketScreenState extends State<BasketScreen>
             ),
             Expanded(child: Container()),
             Text(
-              'Free',
+              translate(context, "Free"),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.copyWith(
                 fontSize: NokNokFonts.caption,
