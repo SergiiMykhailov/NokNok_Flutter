@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nok_nok/ui/localization/nok_nok_localization.dart';
 import 'package:nok_nok/ui/utils/utils.dart';
 import 'package:nok_nok/ui/widgets/action_button.dart';
 
@@ -17,7 +18,8 @@ class TotalCostWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final buttonText = "Purchase | ${formatPrice(_totalCost)}";
+    final localizedPurchaseText = translate(context, "Purchase");
+    final buttonText = "$localizedPurchaseText | ${formatPrice(_totalCost)}";
 
     return ActionButton(
       title: buttonText,

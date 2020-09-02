@@ -1,3 +1,4 @@
+import 'package:nok_nok/ui/localization/nok_nok_localization.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/store_screen/routing/store_screen_router.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
@@ -121,7 +122,7 @@ class _StoreScreenState extends State<StoreScreen>
         state.products);
     }
     else {
-      return buildLoadingWidget(context, "Loading store items...");
+      return buildLoadingWidget(context, translate(context, "Loading store items..."));
     }
   }
 
@@ -175,7 +176,7 @@ class _StoreScreenState extends State<StoreScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'All products',
+                          translate(context, 'All products'),
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.caption.copyWith(
                               fontSize: NokNokFonts.caption,
@@ -267,7 +268,7 @@ class _StoreScreenState extends State<StoreScreen>
           ),
           ButtonWithIconAndSubtitle(
             icon: NokNokImages.ordersHistory,
-            subtitle: "Orders history",
+            subtitle: translate(context, "Orders history"),
             color: NokNokColors.mainThemeColor,
             onPressed: () {
 
@@ -278,7 +279,7 @@ class _StoreScreenState extends State<StoreScreen>
           ),
           ButtonWithIconAndSubtitle(
             icon: NokNokImages.deliveryTime,
-            subtitle: "Delivery time",
+            subtitle: translate(context, "Delivery time"),
             color: NokNokColors.mainThemeColor,
             onPressed: () {
 
@@ -348,7 +349,7 @@ class _StoreScreenState extends State<StoreScreen>
   }
 
   Widget _buildProductsLoadingWidget(BuildContext context) {
-    return buildLoadingWidget(context, "Loading products list...");
+    return buildLoadingWidget(context, translate(context, "Loading products list..."));
   }
 
   void _handleAppendItemWithIndex(int itemIndex) {
