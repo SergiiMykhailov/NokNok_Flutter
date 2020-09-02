@@ -17,7 +17,8 @@ abstract class StoreRepository {
   Future<BuiltList<DeliveryTimeSlot>> getDeliveryTimeSlots(String address);
 
   // Posts order and returns order ID.
-  Future<String> postOrder(DeliveryTimeSlot timeSlot,
+  Future<String> postOrder(String dayOfWeek,
+                           DeliveryTimeSlot timeSlot,
                            String address,
                            String userName,
                            String userPhoneNumber);

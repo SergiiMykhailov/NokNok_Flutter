@@ -97,11 +97,13 @@ class FirebaseStoreRepository extends StoreRepository {
   }
 
   @override
-  Future<String> postOrder(DeliveryTimeSlot timeSlot,
+  Future<String> postOrder(String dayOfWeek,
+                           DeliveryTimeSlot timeSlot,
                            String address,
                            String userName,
                            String userPhoneNumber) async {
-    final orderId = await _orderPublisher.publishOrder(timeSlot,
+    final orderId = await _orderPublisher.publishOrder(dayOfWeek,
+                                                       timeSlot,
                                                        _basket,
                                                        address,
                                                        userName,

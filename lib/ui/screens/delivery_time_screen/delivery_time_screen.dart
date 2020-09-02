@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
 import 'package:nok_nok/models/store_delivery_time_slot.dart';
+import 'package:nok_nok/ui/localization/nok_nok_localization.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/delivery_time_screen/routing/delivery_time_router.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
@@ -106,7 +107,7 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
       return _buildPublishingScreen(context);
     }
     else {
-      return buildLoadingWidget(context, "Loading available delivery slots...");
+      return buildLoadingWidget(context, translate(context, "Loading available delivery slots..."));
     }
   }
 
@@ -137,7 +138,7 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
         return _buildHeader(context: context);
       },
       buildBodyCallback: (BuildContext context) {
-        return buildLoadingWidget(context, 'Publishing order...');
+        return buildLoadingWidget(context, translate(context, "Publishing order..."));
       },
       buildFooterCallback: (BuildContext context) {
         return Container();
@@ -162,7 +163,7 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
           child: Center(
             child: Container(
               child: Text(
-                'Delivery time',
+                translate(context, "Delivery time"),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
                   fontSize: NokNokFonts.caption,
@@ -303,7 +304,7 @@ class _DeliveryTimeScreenState extends State<DeliveryTimeScreen>
             Container(
               height: 51,
               child: Text(
-                'Total cost: ' + formatPrice(state.basket.totalCost),
+                translate(context, "Total cost") + ': ' + formatPrice(state.basket.totalCost),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
                     fontSize: NokNokFonts.caption,

@@ -65,8 +65,15 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
     return dayOfWeekToTimeSlotsMap;
   }
 
-  static BuiltList<DeliveryTimeSlotRowInfo> buildRowsFromTimeSlotsMap(Map<int, List<DeliveryTimeSlot>> dayOfWeekToTimeSlotsMap) {
+  BuiltList<DeliveryTimeSlotRowInfo> buildRowsFromTimeSlotsMap(Map<int, List<DeliveryTimeSlot>> dayOfWeekToTimeSlotsMap) {
     var result = List<DeliveryTimeSlotRowInfo>();
+
+    if (buildContextProvider == null) {
+      print('Build context provider is not set for DeliveryTimeBloc, Unable to build delivery time screen items.');
+      return BuiltList<DeliveryTimeSlotRowInfo>.from(result);
+    }
+
+    final context = buildContextProvider.getContext();
 
     for (int dayOfWeek = DayOfWeekMondayIndex;
          dayOfWeek <= DayOfWeekSundayIndex;
@@ -74,7 +81,7 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
       final currentDayTimeSlots = dayOfWeekToTimeSlotsMap[dayOfWeek];
 
       if (currentDayTimeSlots != null && currentDayTimeSlots.isNotEmpty) {
-        final dayTitle = titleForDayOfWeek(dayOfWeek);
+        final dayTitle = titleForDayOfWeek(context, dayOfWeek);
         result.add(DeliveryTimeSlotRowInfo(null, dayTitle));
 
         for (int timeSlotRowIndex = 0;
@@ -119,7 +126,16 @@ class DeliveryTimeBloc extends Bloc<DeliveryTimeEvent, DeliveryTimeState> {
     final userName = SecureStorage().userName;
     final phoneNumber = SecureStorage().phoneNumber;
 
-    _storeRepository.postOrder(timeSlot, address, userName, phoneNumber)
+    if (buildContextProvider == null) {
+      print('Build context provider is not set for DeliveryTimeBloc, Unable to publish an order.');
+      yield DeliveryTimeStatePublishingOrder();
+      return;
+    }
+
+    final context = buildContextProvider.getContext();
+    final localizedDayTitle = titleForDayOfWeek(context, timeSlot.dayOfWeek);
+
+    _storeRepository.postOrder(localizedDayTitle, timeSlot, address, userName, phoneNumber)
       .then((String orderId) {
       if (buildContextProvider == null) {
         print('Build context provider is not set for DeliveryTimeBloc, Unable to navigate to order confirmation.');

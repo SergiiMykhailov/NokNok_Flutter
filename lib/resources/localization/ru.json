@@ -19,5 +19,16 @@
   "Contact Info": "Контактная информация",
   "Email": "Email",
   "Delivery address": "Адрес доставки",
-  "Apartment": "Квартира"
+  "Apartment": "Квартира",
+  "Loading available delivery slots...": "Загрузка времени доставки...",
+  "Publishing order...": "Публикация заказа...",
+  "Delivery time": "Время доставки",
+  "Total cost": "Общая стоимость",
+  "Monday": "Понедельник",
+  "Tuesday": "Вторник",
+  "Wednesday": "Среда",
+  "Thursday": "Четверг",
+  "Friday": "Пятница",
+  "Saturday": "Суббота",
+  "Sunday": "Воскресенье"
 }
