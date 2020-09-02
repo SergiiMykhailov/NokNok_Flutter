@@ -13,5 +13,11 @@
   "Loading basket items...": "Загрузка корзины...",
   "Basket": "Корзина",
   "Delivery:": "Доставка:",
-  "Free": "Бесплатно"
+  "Free": "Бесплатно",
+  "Loading delivery parameters...": "Загрузка информации о доставке...",
+  "Delivery": "Доставка",
+  "Contact Info": "Контактная информация",
+  "Email": "Email",
+  "Delivery address": "Адрес доставки",
+  "Apartment": "Квартира"
 }

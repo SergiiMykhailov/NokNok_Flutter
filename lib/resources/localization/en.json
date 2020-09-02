@@ -13,5 +13,11 @@
   "Loading basket items...": "Loading basket items...",
   "Basket": "Basket",
   "Delivery:": "Delivery:",
-  "Free": "Free"
+  "Free": "Free",
+  "Loading delivery parameters...": "Loading delivery parameters...",
+  "Delivery": "Delivery",
+  "Contact Info": "Contact Info",
+  "Email": "Email",
+  "Delivery address": "Delivery address",
+  "Apartment": "Apartment"
 }

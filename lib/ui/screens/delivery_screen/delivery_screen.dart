@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:nok_nok/data_access/repositories/base/store_repository.dart';
+import 'package:nok_nok/ui/localization/nok_nok_localization.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/delivery_screen/routing/delivery_screen_router.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
@@ -99,7 +100,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
       return _buildDeliveryScreen(context, state);
     }
     else {
-      return buildLoadingWidget(context, "Loading delivery parameters...");
+      return buildLoadingWidget(context, translate(context, "Loading delivery parameters..."));
     }
   }
 
@@ -148,7 +149,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           child: Center(
             child: Container(
               child: Text(
-                'Delivery',
+                translate(context, "Delivery"),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
                   fontSize: NokNokFonts.caption,
@@ -186,7 +187,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           children: [
             SizedBox(width: 14,),
             Text(
-              'Delivery:',
+              translate(context, "Delivery:"),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.copyWith(
                 fontSize: NokNokFonts.caption,
@@ -194,7 +195,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             ),
             Expanded(child: Container()),
             Text(
-              'Free',
+              translate(context, "Free"),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.copyWith(
                 fontSize: NokNokFonts.caption,
@@ -233,7 +234,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
           Row(
             children: [
               Text(
-                'Contact Info',
+                translate(context, "Contact Info"),
                 textAlign: TextAlign.left,
                 style: Theme.of(context).textTheme.caption.copyWith(
                   fontSize: NokNokFonts.caption,
@@ -249,7 +250,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                 children: [
                   Container(
                     child: Text(
-                      'Name:',
+                      translate(context, "Name") + ':',
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.caption.copyWith(
                         fontSize: NokNokFonts.caption,
@@ -259,7 +260,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                   SizedBox(height: 8,),
                   Container(
                     child: Text(
-                      'Phone number:',
+                      translate(context, "Phone number") + ':',
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.caption.copyWith(
                         fontSize: NokNokFonts.caption,
@@ -269,7 +270,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
                   SizedBox(height: 8,),
                   Container(
                     child: Text(
-                      'Email:',
+                      translate(context, "Email") + ':',
                       textAlign: TextAlign.left,
                       style: Theme.of(context).textTheme.caption.copyWith(
                         fontSize: NokNokFonts.caption,
@@ -343,7 +344,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             Row(
               children: [
                 Text(
-                  'Delivery address',
+                  translate(context, "Delivery address"),
                   textAlign: TextAlign.left,
                   style: Theme.of(context).textTheme.caption.copyWith(
                     fontSize: NokNokFonts.caption,
@@ -363,7 +364,7 @@ class _DeliveryScreenState extends State<DeliveryScreen>
             SizedBox(height: 23,),
             NokNokTextField(
               supportsTextInput: true,
-              placeholderOrTitle: 'Apartment',
+              placeholderOrTitle: translate(context, "Apartment"),
               image: NokNokImages.apartment,
               formatters: [WhitelistingTextInputFormatter.digitsOnly],
             )
