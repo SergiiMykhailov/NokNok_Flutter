@@ -1,3 +1,4 @@
+import 'package:nok_nok/ui/localization/localization_configurator.dart';
 import 'package:nok_nok/ui/routing/app_routing/app_router_factory.dart';
 import 'package:nok_nok/ui/routing/base_router.dart';
 import 'package:nok_nok/ui/routing/router_factory.dart';
@@ -5,7 +6,6 @@ import 'package:nok_nok/ui/routing/router_factory.dart';
 import 'package:flutter/cupertino.dart';
 
 void main() {
-  print('Starting the app...');
   runApp(NokNokApp());
 }
 
@@ -29,7 +29,13 @@ class NokNokApp extends StatelessWidget {
       ),
       onGenerateRoute: (RouteSettings settings) {
         return _router.generateRoute(settings);
-      }
+      },
+      supportedLocales: LocalizationConfigurator.supportedLocales,
+      localizationsDelegates: LocalizationConfigurator.localizationDelegates,
+      localeListResolutionCallback: (requestedLocales, supportedLocales) {
+        return LocalizationConfigurator.resolveLocale(requestedLocales, supportedLocales);
+      },
+      debugShowCheckedModeBanner: false,
     );
   }
 

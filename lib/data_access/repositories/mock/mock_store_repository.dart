@@ -131,7 +131,8 @@ class MockStoreRepository implements StoreRepository {
   }
 
   @override
-  Future<String> postOrder(DeliveryTimeSlot timeSlot,
+  Future<String> postOrder(String dayOfWeek,
+                           DeliveryTimeSlot timeSlot,
                            String address,
                            String userName,
                            String userPhoneNumber) {

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:nok_nok/ui/localization/nok_nok_localization.dart';
 import 'package:nok_nok/ui/screens/order_confirmation/routing/order_confirmation_router.dart';
 import 'package:nok_nok/ui/theme/nok_nok_colors.dart';
 import 'package:nok_nok/ui/theme/nok_nok_theme.dart';
@@ -52,7 +53,7 @@ class OrderConfirmationScreen extends StatelessWidget {
           children: [
             SizedBox(height: 34,),
             Text(
-              'Order details',
+              translate(context, "Order details"),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.caption.copyWith(
                 fontSize: NokNokFonts.caption,
@@ -71,7 +72,7 @@ class OrderConfirmationScreen extends StatelessWidget {
       children: [
         CupertinoButton(
           child: Text(
-            'Order ID: $orderId',
+            translate(context, "Order ID") + ': $orderId',
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.caption.copyWith(
               fontSize: NokNokFonts.caption,
@@ -95,7 +96,7 @@ class OrderConfirmationScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ActionButton(
-              title: 'To main screen',
+              title: translate(context, "To main screen"),
               onPressed: () {
                 router.navigateToMain(context);
               }

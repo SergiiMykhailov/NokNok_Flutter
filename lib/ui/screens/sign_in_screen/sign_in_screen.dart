@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nok_nok/ui/localization/nok_nok_localization.dart';
 import 'package:nok_nok/ui/routing/build_context_provider.dart';
 import 'package:nok_nok/ui/screens/sign_in_screen/routing/sign_in_screen_router.dart';
 
@@ -54,28 +55,27 @@ class _SignInScreenState extends State<SignInScreen>
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    _nameTextField = NokNokTextField(
-      supportsTextInput: true,
-      placeholderOrTitle: 'Name',
-      image: null,
-      focusNode: _nameFocusNode,
-    );
-
-    _phoneNumberTextField = NokNokTextField(
-      supportsTextInput: true,
-      placeholderOrTitle: 'Phone number',
-      image: null,
-      formatters: [WhitelistingTextInputFormatter.digitsOnly],
-      focusNode: _phoneNumberFocusNode,
-      keyboardType: TextInputType.phone,
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    if (_nameTextField == null) {
+      _nameTextField = NokNokTextField(
+        supportsTextInput: true,
+        placeholderOrTitle: translate(context, 'Name'),
+        image: null,
+        focusNode: _nameFocusNode,
+      );
+    }
+
+    if (_phoneNumberTextField == null) {
+      _phoneNumberTextField = NokNokTextField(
+        supportsTextInput: true,
+        placeholderOrTitle: translate(context, 'Phone number'),
+        image: null,
+        formatters: [WhitelistingTextInputFormatter.digitsOnly],
+        focusNode: _phoneNumberFocusNode,
+        keyboardType: TextInputType.phone,
+      );
+    }
+
     return Container(
       color: CupertinoColors.white,
       child: SafeArea(
@@ -112,7 +112,7 @@ class _SignInScreenState extends State<SignInScreen>
 
   Widget _buildScreen(BuildContext context, SignInState state) {
     if (state is SignInStateLoading) {
-      return buildLoadingWidget(context, "Signing in...");
+      return buildLoadingWidget(context, translate(context, 'Signing in...'));
     }
     else if (state is SignInStateEmpty) {
       return _buildSignInScreen(context);
@@ -158,7 +158,7 @@ class _SignInScreenState extends State<SignInScreen>
           child: Center(
             child: Container(
               child: Text(
-                'Sign In',
+                translate(context, 'Sign In'),
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.caption.copyWith(
                   fontSize: NokNokFonts.caption,
@@ -241,7 +241,7 @@ class _SignInScreenState extends State<SignInScreen>
             Container(
               height: ButtonHeight,
               child: ActionButton(
-                title: 'Register',
+                title: translate(context, 'Register'),
                 onPressed: () {
                   _signInBloc.signIn(
                     phoneNumber: _phoneNumberTextField.text,
