@@ -68,8 +68,8 @@ class _BasketListItemWidgetState extends State<BasketListItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final imageContent = _basketItem.product.imageUrl != null
-      ? Image.network(_basketItem.product.imageUrl)
+    final imageContent = _basketItem.product.resolvedImageUrl != null
+      ? Image.network(_basketItem.product.resolvedImageUrl)
       : Container();
 
     return ClipRRect(

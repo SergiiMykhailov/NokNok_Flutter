@@ -54,8 +54,8 @@ class _CompactProductsListItemWidgetState extends State<CompactProductsListItemW
 
   @override
   Widget build(BuildContext context) {
-    final imageContent = _product.imageUrl != null
-                         ? Image.network(_product.imageUrl)
+    final imageContent = _product.resolvedImageUrl != null
+                         ? Image.network(_product.resolvedImageUrl)
                          : Container();
 
     return ClipRRect(
