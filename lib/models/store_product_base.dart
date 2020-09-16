@@ -5,17 +5,21 @@ class StoreProductBase {
 
   // Public methods and properties
 
+  static const KeyResolvedImageUrl = "resolvedImageUrl";
+
   final String id;
   final String title;
   final String description;
   final String imageUrl;
+  final String resolvedImageUrl;
   final double price;
 
   StoreProductBase({@required this.id,
                     @required this.title,
                     @required this.description,
                     this.price,
-                    this.imageUrl});
+                    this.imageUrl,
+                    this.resolvedImageUrl});
 
   static StoreProductBase fromJSON(Map<dynamic, dynamic> json) {
     if (json == null) {
@@ -27,6 +31,7 @@ class StoreProductBase {
     final description = json[_KeyDescription];
     final imageUrl = json[_KeyImageUrl];
     final price = json[_KeyPrice];
+    final resolvedImageUrl = json[KeyResolvedImageUrl];
 
     if (id != null &&
         title != null &&
@@ -44,7 +49,8 @@ class StoreProductBase {
         title: title,
         description: description.toString(),
         price: priceToAssign,
-        imageUrl: imageUrl
+        imageUrl: imageUrl,
+        resolvedImageUrl: resolvedImageUrl
       );
     }
 
@@ -56,6 +62,17 @@ class StoreProductBase {
     final result = '$title, ($description), $priceText';
 
     return result;
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      _KeyId : id,
+      _KeyTitle :  title,
+      _KeyDescription : description,
+      _KeyImageUrl : imageUrl,
+      KeyResolvedImageUrl : resolvedImageUrl,
+      _KeyPrice : price
+    };
   }
 
   // Internal fields
