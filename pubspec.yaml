@@ -11,7 +11,7 @@ description: Mobile app for retail
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+1
+version: 1.0.1+2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -20,9 +20,20 @@ dependencies:
   flutter:
     sdk: flutter
 
+  flutter_localizations:
+    sdk: flutter
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+  flutter_launcher_icons: ^0.7.2+1
+  http: ^0.12.0+1
+  bloc: ^0.14.0
+  flutter_bloc: ^0.18.0
+  built_collection: ^4.1.0
+  flutter_secure_storage: ^3.3.1
+  firebase_database: ^1.0.3
+  firebase_storage:
 
 dev_dependencies:
   flutter_test:
@@ -41,9 +52,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+  assets:
+    - lib/resources/images/
+    - lib/resources/localization/en.json
+    - lib/resources/localization/ru.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -70,3 +82,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_icons:
+  image_path: "lib/resources/images/app_icon.png"
+  android: true
+  ios: true
