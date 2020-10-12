@@ -41,26 +41,45 @@ class FirebaseStoreRepository extends StoreRepository {
       final allProductNodesSnapshot = await productsNode.once();
       final List<dynamic> allProductNodes = allProductNodesSnapshot.value;
 
-      for (var productNode in allProductNodes) {
+      for (var nodeIndex = 0;
+           nodeIndex < allProductNodes.length;
+           ++nodeIndex) {
+        final productNode = allProductNodes[nodeIndex];
         final Map<dynamic, dynamic> nodeMap = productNode;
         final parsedProduct = StoreProductBase.fromJSON(nodeMap);
 
         if (parsedProduct != null) {
-          final imageSnapshot =  _storage.child(_ProductsNodeName).child(parsedProduct.imageUrl);
-          var resolvedImageUrl = '';
-
-          try {
-            resolvedImageUrl = await imageSnapshot.getDownloadURL();
+          if (parsedProduct.resolvedImageUrl != null) {
+            result.add(parsedProduct);
           }
-          catch (exception) { }
+          else {
+            final imageSnapshot = _storage.child(_ProductsNodeName).child(
+              parsedProduct.imageUrl);
+            var resolvedImageUrl = '';
 
-          final productWithResolvedImageUrl = StoreProductBase(id: parsedProduct.id,
-            title: parsedProduct.title,
-            description: parsedProduct.description,
-            price: parsedProduct.price,
-            imageUrl: resolvedImageUrl);
+            try {
+              resolvedImageUrl = await imageSnapshot.getDownloadURL();
+            }
+            catch (exception) {}
 
-          result.add(productWithResolvedImageUrl);
+            final productWithResolvedImageUrl = StoreProductBase(
+              id: parsedProduct.id,
+              title: parsedProduct.title,
+              description: parsedProduct.description,
+              price: parsedProduct.price,
+              imageUrl: parsedProduct.imageUrl,
+              resolvedImageUrl: resolvedImageUrl
+            );
+
+            result.add(productWithResolvedImageUrl);
+            
+            // Store resolved image URL so it can be reused in the next session
+            final productNodeName = '$nodeIndex';
+            final productJSON = productWithResolvedImageUrl.toJSON();
+            _storeNode.child(_ProductsNodeName)
+                      .child(productNodeName)
+                      .set(productJSON);
+          }
         }
       }
     }
