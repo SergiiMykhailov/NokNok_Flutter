@@ -44,14 +44,16 @@ class StoreProductBase {
         priceToAssign = price.toDouble();
       }
 
-      return StoreProductBase(
-        id: id,
-        title: title,
-        description: description.toString(),
-        price: priceToAssign,
-        imageUrl: imageUrl,
-        resolvedImageUrl: resolvedImageUrl
-      );
+      if (priceToAssign is double) {
+        return StoreProductBase(
+          id: id,
+          title: title,
+          description: description.toString(),
+          price: priceToAssign,
+          imageUrl: imageUrl,
+          resolvedImageUrl: resolvedImageUrl
+        );
+      }
     }
 
     return null;
